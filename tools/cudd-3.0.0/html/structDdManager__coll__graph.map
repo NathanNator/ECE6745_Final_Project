@@ -1,0 +1,11 @@
+<map id="DdManager" name="DdManager">
+<area shape="rect" id="node1" title="Specialized DD symbol table." alt="" coords="313,377,402,404"/>
+<area shape="rect" id="node7" href="$structDdLocalCache.html" title="Local cache." alt="" coords="451,511,559,537"/>
+<area shape="rect" id="node9" href="$structDdHook.html" title="CUDD hook." alt="" coords="238,511,309,537"/>
+<area shape="rect" id="node2" href="$structDdNode.html" title="Decision diagram node." alt="" coords="207,5,278,32"/>
+<area shape="rect" id="node3" href="$structDdChildren.html" title="The two children of a non&#45;terminal node." alt="" coords="107,191,194,218"/>
+<area shape="rect" id="node4" href="$structDdCache.html" title="Computed table." alt="" coords="5,191,83,218"/>
+<area shape="rect" id="node5" href="$structDdSubtable.html" title="Subtable for one index." alt="" coords="219,191,309,218"/>
+<area shape="rect" id="node8" href="$structDdLocalCacheItem.html" title="Generic local cache item." alt="" coords="547,318,682,345"/>
+<area shape="rect" id="node6" href="$structMtrNode__.html" title="multi&#45;way tree node." alt="" coords="455,191,534,218"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="BnetNetwork" name="BnetNetwork">
+<area shape="rect" id="node1" title="Very simple boolean network data structure." alt="" coords="171,201,269,228"/>
+<area shape="rect" id="node2" href="$structBnetNode.html" title="Node of the boolean network." alt="" coords="48,111,128,137"/>
+<area shape="rect" id="node3" href="$structBnetTabline.html" title="Type to store a line of the truth table of a node." alt="" coords="5,5,96,32"/>
+<area shape="rect" id="node4" href="$structDdNode.html" title="Decision diagram node." alt="" coords="174,5,245,32"/>
+<area shape="rect" id="node5" href="$structDdChildren.html" title="The two children of a non&#45;terminal node." alt="" coords="210,111,297,137"/>
+<area shape="rect" id="node6" href="$structst__table.html" title="Symbol table header." alt="" coords="330,111,398,137"/>
+<area shape="rect" id="node7" href="$structst__table__entry.html" title="Symbol table entry." alt="" coords="323,5,427,32"/>
+</map>
