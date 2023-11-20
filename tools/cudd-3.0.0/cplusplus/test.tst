@@ -113,15 +113,15 @@ edge [dir = none];
 { rank = same; node [shape = box]; edge [style = invis];
 "  v0  " -> "  v1  " -> "  v2  " -> "  v3  "; }
 { rank = same; " x0 ";
-"0x51";
-"0x13";
 "0xf";
 "0x54";
+"0x51";
+"0x13";
 }
 { rank = same; " x1 ";
-"0x53";
 "0x10";
 "0x50";
+"0x53";
 }
 { rank = same; " x2 ";
 "0x52";
@@ -138,20 +138,20 @@ edge [dir = none];
 "  v1  " -> "0x13" [style = solid];
 "  v2  " -> "0x51" [style = solid];
 "  v3  " -> "0x54" [style = solid];
-"0x51" -> "0x50";
-"0x51" -> "0x41" [style = dashed];
-"0x13" -> "0x10";
-"0x13" -> "0x9" [style = dashed];
 "0xf" -> "0x9";
 "0xf" -> "0x9" [style = dotted];
 "0x54" -> "0x53";
 "0x54" -> "0x9" [style = dashed];
-"0x53" -> "0x52";
-"0x53" -> "0x42" [style = dashed];
+"0x51" -> "0x50";
+"0x51" -> "0x41" [style = dashed];
+"0x13" -> "0x10";
+"0x13" -> "0x9" [style = dashed];
 "0x10" -> "0x9";
 "0x10" -> "0x9" [style = dotted];
 "0x50" -> "0x41";
 "0x50" -> "0x9" [style = dashed];
+"0x53" -> "0x52";
+"0x53" -> "0x42" [style = dashed];
 "0x52" -> "0x42";
 "0x52" -> "0x9" [style = dashed];
 "0x41" -> "0x9";
@@ -242,58 +242,58 @@ edge [dir = none];
 { rank = same; node [shape = box]; edge [style = invis];
 "  s0  " -> "  s1  " -> "  s2  " -> "  c3  "; }
 { rank = same; " a2 ";
-"0x380a";
-"0x380b";
+"0x68a";
+"0x68b";
 }
 { rank = same; " b2 ";
-"0x3790";
+"0x610";
 }
 { rank = same; " a1 ";
-"0x3808";
-"0x3809";
+"0x689";
+"0x688";
 }
 { rank = same; " b1 ";
-"0x37c2";
+"0x642";
 }
 { rank = same; " a0 ";
-"0x3806";
-"0x3807";
+"0x687";
+"0x686";
 }
 { rank = same; " b0 ";
-"0x37e1";
+"0x661";
 }
 { rank = same; " c0 ";
-"0x3805";
+"0x685";
 }
 { rank = same; "CONST NODES";
-{ node [shape = box]; "0x3789";
+{ node [shape = box]; "0x609";
 }
 }
-"  s0  " -> "0x3806" [style = solid];
-"  s1  " -> "0x3808" [style = solid];
-"  s2  " -> "0x380a" [style = solid];
-"  c3  " -> "0x380b" [style = solid];
-"0x380a" -> "0x3809";
-"0x380a" -> "0x3809" [style = dotted];
-"0x380b" -> "0x3790";
-"0x380b" -> "0x3809" [style = dashed];
-"0x3790" -> "0x3789";
-"0x3790" -> "0x3789" [style = dotted];
-"0x3808" -> "0x3807";
-"0x3808" -> "0x3807" [style = dotted];
-"0x3809" -> "0x37c2";
-"0x3809" -> "0x3807" [style = dashed];
-"0x37c2" -> "0x3789";
-"0x37c2" -> "0x3789" [style = dotted];
-"0x3806" -> "0x3805";
-"0x3806" -> "0x3805" [style = dotted];
-"0x3807" -> "0x37e1";
-"0x3807" -> "0x3805" [style = dashed];
-"0x37e1" -> "0x3789";
-"0x37e1" -> "0x3789" [style = dotted];
-"0x3805" -> "0x3789";
-"0x3805" -> "0x3789" [style = dotted];
-"0x3789" [label = "1"];
+"  s0  " -> "0x686" [style = solid];
+"  s1  " -> "0x688" [style = solid];
+"  s2  " -> "0x68a" [style = solid];
+"  c3  " -> "0x68b" [style = solid];
+"0x68a" -> "0x689";
+"0x68a" -> "0x689" [style = dotted];
+"0x68b" -> "0x610";
+"0x68b" -> "0x689" [style = dashed];
+"0x610" -> "0x609";
+"0x610" -> "0x609" [style = dotted];
+"0x689" -> "0x642";
+"0x689" -> "0x687" [style = dashed];
+"0x688" -> "0x687";
+"0x688" -> "0x687" [style = dotted];
+"0x642" -> "0x609";
+"0x642" -> "0x609" [style = dotted];
+"0x687" -> "0x661";
+"0x687" -> "0x685" [style = dashed];
+"0x686" -> "0x685";
+"0x686" -> "0x685" [style = dotted];
+"0x661" -> "0x609";
+"0x661" -> "0x609" [style = dotted];
+"0x685" -> "0x609";
+"0x685" -> "0x609" [style = dotted];
+"0x609" [label = "1"];
 }
 z[0]: 4 nodes 2 minterms
 00000000100010 1
@@ -371,8 +371,8 @@ edge [dir = none];
 { rank = same; node [shape = box]; edge [style = invis];
 "  s0  " -> "  s1  " -> "  s2  " -> "  c3  "; }
 { rank = same; " a2+ ";
-"0x43";
 "0x4c";
+"0x43";
 }
 { rank = same; " a2- ";
 "0x4a";
@@ -387,8 +387,8 @@ edge [dir = none];
 "0x33";
 }
 { rank = same; " a1- ";
-"0x2a";
 "0x38";
+"0x2a";
 }
 { rank = same; " b1+ ";
 "0x34";
@@ -402,8 +402,8 @@ edge [dir = none];
 "0x1e";
 }
 { rank = same; " a0- ";
-"0x23";
 "0x15";
+"0x23";
 }
 { rank = same; " b0+ ";
 "0x1f";
@@ -426,10 +426,10 @@ edge [dir = none];
 "  s1  " -> "0x2c" [style = solid];
 "  s2  " -> "0x43" [style = solid];
 "  c3  " -> "0x4c" [style = solid];
-"0x43" -> "0x3a";
-"0x43" -> "0x3f" [style = dashed];
 "0x4c" -> "0x46";
 "0x4c" -> "0x4a" [style = dashed];
+"0x43" -> "0x3a";
+"0x43" -> "0x3f" [style = dashed];
 "0x4a" -> "0x3a";
 "0x4a" -> "0xa" [style = dashed];
 "0x3f" -> "0x33";
@@ -442,10 +442,10 @@ edge [dir = none];
 "0x2c" -> "0x2a" [style = dashed];
 "0x33" -> "0x2f";
 "0x33" -> "0x2a" [style = dashed];
-"0x2a" -> "0x1e";
-"0x2a" -> "0xa" [style = dashed];
 "0x38" -> "0x25";
 "0x38" -> "0xa" [style = dashed];
+"0x2a" -> "0x1e";
+"0x2a" -> "0xa" [style = dashed];
 "0x34" -> "0x9";
 "0x34" -> "0xa" [style = dashed];
 "0x2f" -> "0x9";
@@ -456,10 +456,10 @@ edge [dir = none];
 "0x17" -> "0x15" [style = dashed];
 "0x1e" -> "0x1a";
 "0x1e" -> "0x15" [style = dashed];
-"0x23" -> "0xe";
-"0x23" -> "0xa" [style = dashed];
 "0x15" -> "0xd";
 "0x15" -> "0xa" [style = dashed];
+"0x23" -> "0xe";
+"0x23" -> "0xa" [style = dashed];
 "0x1f" -> "0x9";
 "0x1f" -> "0xa" [style = dashed];
 "0x1a" -> "0x9";
@@ -497,10 +497,10 @@ edge [dir = none];
 "0x7d";
 }
 { rank = same; " b ";
-"0x7e";
 "0x79";
 "0x7c";
 "0x7a";
+"0x7e";
 }
 { rank = same; " c ";
 "0x31";
@@ -520,14 +520,14 @@ edge [dir = none];
 "  lprime  " -> "0x79" [style = solid];
 "0x7d" -> "0x7a";
 "0x7d" -> "0x7c" [style = dashed];
-"0x7e" -> "0x77";
-"0x7e" -> "0x9" [style = dashed];
 "0x79" -> "0x42";
 "0x79" -> "0x9" [style = dotted];
 "0x7c" -> "0x31";
 "0x7c" -> "0x9" [style = dotted];
 "0x7a" -> "0x42";
 "0x7a" -> "0x77" [style = dotted];
+"0x7e" -> "0x77";
+"0x7e" -> "0x9" [style = dashed];
 "0x31" -> "0x42";
 "0x31" -> "0x9" [style = dashed];
 "0x77" -> "0x9";
@@ -630,15 +630,15 @@ Peak number of live nodes: 2030
 Number of BDD variables: 60
 Number of ZDD variables: 14
 Number of cache entries: 524288
-Number of cache look-ups: 3847
+Number of cache look-ups: 3848
 Number of cache hits: 876
-Number of cache insertions: 3052
-Number of cache collisions: 5
-Number of cache deletions: 2295
+Number of cache insertions: 3053
+Number of cache collisions: 9
+Number of cache deletions: 2293
 Cache used slots = 0.17% (expected 0.17%)
 Soft limit for cache size: 76800
 Number of buckets in unique table: 19200
-Used buckets in unique table: 4.25% (expected 4.19%)
+Used buckets in unique table: 4.22% (expected 4.19%)
 Number of BDD and ADD nodes: 2634
 Number of ZDD nodes: 14
 Number of dead BDD and ADD nodes: 2570

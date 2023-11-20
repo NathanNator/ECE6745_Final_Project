@@ -2,9 +2,9 @@ e = a*b*c
 
 Printing the BDD graph for f: ptr to the nodes, T & E children
 : 4 nodes 1 leaves 1 minterms
-ID =  0xbf72e	index = 0	T = 0xbf72d	E = !1        
-ID =  0xbf72d	index = 1	T = 0xbf72b	E = !1        
-ID =  0xbf72b	index = 2	T = 1        	E = !1        
+ID =  0x921ae	index = 0	T = 0x921ad	E = !1        
+ID =  0x921ad	index = 1	T = 0x921ab	E = !1        
+ID =  0x921ab	index = 2	T = 1        	E = !1        
 
 
 Printing the minterms of f:

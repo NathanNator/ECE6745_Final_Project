@@ -2,9 +2,9 @@
 < e = a*b*c
 < Printing the BDD graph for f: ptr to the nodes, T & E children
 < : 4 nodes 1 leaves 1 minterms
-< ID =  0x6d9ae	index = 0	T = 0x6d9ad	E = !1        
-< ID =  0x6d9ad	index = 1	T = 0x6d9ab	E = !1        
-< ID =  0x6d9ab	index = 2	T = 1        	E = !1        
+< ID =  0x9642e	index = 0	T = 0x9642d	E = !1        
+< ID =  0x9642d	index = 1	T = 0x9642b	E = !1        
+< ID =  0x9642b	index = 2	T = 1        	E = !1        
 ---
 > # Nanotrav Version #0.13, Release date 2015/7/15
 > # CUDD Version 3.0.0
@@ -42,9 +42,9 @@
 < e = a*b*c
 < Printing the BDD graph for f: ptr to the nodes, T & E children
 < : 4 nodes 1 leaves 1 minterms
-< ID =  0xfc12e	index = 0	T = 0xfc12d	E = !1        
-< ID =  0xfc12d	index = 1	T = 0xfc12b	E = !1        
-< ID =  0xfc12b	index = 2	T = 1        	E = !1        
+< ID =  0xa002e	index = 0	T = 0xa002d	E = !1        
+< ID =  0xa002d	index = 1	T = 0xa002b	E = !1        
+< ID =  0xa002b	index = 2	T = 1        	E = !1        
 < 
 < 
 < Printing the minterms of f:
@@ -83,9 +83,9 @@
 < e = a*b*c
 < Printing the BDD graph for f: ptr to the nodes, T & E children
 < : 4 nodes 1 leaves 1 minterms
-< ID =  0x8c7ae	index = 0	T = 0x8c7ad	E = !1        
-< ID =  0x8c7ad	index = 1	T = 0x8c7ab	E = !1        
-< ID =  0x8c7ab	index = 2	T = 1        	E = !1        
+< ID =  0x71eae	index = 0	T = 0x71ead	E = !1        
+< ID =  0x71ead	index = 1	T = 0x71eab	E = !1        
+< ID =  0x71eab	index = 2	T = 1        	E = !1        
 < 
 < 
 < Printing the minterms of f:
@@ -121,9 +121,9 @@
 < e = a*b*c
 < Printing the BDD graph for f: ptr to the nodes, T & E children
 < : 4 nodes 1 leaves 1 minterms
-< ID =  0xfcf2e	index = 0	T = 0xfcf2d	E = !1        
-< ID =  0xfcf2d	index = 1	T = 0xfcf2b	E = !1        
-< ID =  0xfcf2b	index = 2	T = 1        	E = !1        
+< ID =  0x11efae	index = 0	T = 0x11efad	E = !1        
+< ID =  0x11efad	index = 1	T = 0x11efab	E = !1        
+< ID =  0x11efab	index = 2	T = 1        	E = !1        
 < 
 < 
 < Printing the minterms of f:
@@ -150,9 +150,9 @@
 < e = a*b*c
 < Printing the BDD graph for f: ptr to the nodes, T & E children
 < : 4 nodes 1 leaves 1 minterms
-< ID =  0x3da2e	index = 0	T = 0x3da2d	E = !1        
-< ID =  0x3da2d	index = 1	T = 0x3da2b	E = !1        
-< ID =  0x3da2b	index = 2	T = 1        	E = !1        
+< ID =  0x4c8ae	index = 0	T = 0x4c8ad	E = !1        
+< ID =  0x4c8ad	index = 1	T = 0x4c8ab	E = !1        
+< ID =  0x4c8ab	index = 2	T = 1        	E = !1        
 < 
 < 
 < Printing the minterms of f:
@@ -197,9 +197,9 @@
 < e = a*b*c
 < Printing the BDD graph for f: ptr to the nodes, T & E children
 < : 4 nodes 1 leaves 1 minterms
-< ID =  0xf5a2e	index = 0	T = 0xf5a2d	E = !1        
-< ID =  0xf5a2d	index = 1	T = 0xf5a2b	E = !1        
-< ID =  0xf5a2b	index = 2	T = 1        	E = !1        
+< ID =  0xee0ae	index = 0	T = 0xee0ad	E = !1        
+< ID =  0xee0ad	index = 1	T = 0xee0ab	E = !1        
+< ID =  0xee0ab	index = 2	T = 1        	E = !1        
 < 
 < 
 < Printing the minterms of f:
@@ -395,9 +395,9 @@
 < e = a*b*c
 < Printing the BDD graph for f: ptr to the nodes, T & E children
 < : 4 nodes 1 leaves 1 minterms
-< ID =  0x8262e	index = 0	T = 0x8262d	E = !1        
-< ID =  0x8262d	index = 1	T = 0x8262b	E = !1        
-< ID =  0x8262b	index = 2	T = 1        	E = !1        
+< ID =  0x1204ae	index = 0	T = 0x1204ad	E = !1        
+< ID =  0x1204ad	index = 1	T = 0x1204ab	E = !1        
+< ID =  0x1204ab	index = 2	T = 1        	E = !1        
 < 
 < 
 < Printing the minterms of f:
@@ -3592,9 +3592,9 @@
 < e = a*b*c
 < Printing the BDD graph for f: ptr to the nodes, T & E children
 < : 4 nodes 1 leaves 1 minterms
-< ID =  0xbf72e	index = 0	T = 0xbf72d	E = !1        
-< ID =  0xbf72d	index = 1	T = 0xbf72b	E = !1        
-< ID =  0xbf72b	index = 2	T = 1        	E = !1        
+< ID =  0x921ae	index = 0	T = 0x921ad	E = !1        
+< ID =  0x921ad	index = 1	T = 0x921ab	E = !1        
+< ID =  0x921ab	index = 2	T = 1        	E = !1        
 < 
 < 
 < Printing the minterms of f:
@@ -4937,9 +4937,9 @@
 < e = a*b*c
 < Printing the BDD graph for f: ptr to the nodes, T & E children
 < : 4 nodes 1 leaves 1 minterms
-< ID =  0x4652e	index = 0	T = 0x4652d	E = !1        
-< ID =  0x4652d	index = 1	T = 0x4652b	E = !1        
-< ID =  0x4652b	index = 2	T = 1        	E = !1        
+< ID =  0x4ddae	index = 0	T = 0x4ddad	E = !1        
+< ID =  0x4ddad	index = 1	T = 0x4ddab	E = !1        
+< ID =  0x4ddab	index = 2	T = 1        	E = !1        
 < 
 < 
 < Printing the minterms of f:
@@ -5016,9 +5016,9 @@
 < e = a*b*c
 < Printing the BDD graph for f: ptr to the nodes, T & E children
 < : 4 nodes 1 leaves 1 minterms
-< ID =  0xa032e	index = 0	T = 0xa032d	E = !1        
-< ID =  0xa032d	index = 1	T = 0xa032b	E = !1        
-< ID =  0xa032b	index = 2	T = 1        	E = !1        
+< ID =  0xb4cae	index = 0	T = 0xb4cad	E = !1        
+< ID =  0xb4cad	index = 1	T = 0xb4cab	E = !1        
+< ID =  0xb4cab	index = 2	T = 1        	E = !1        
 < 
 < 
 < Printing the minterms of f:
@@ -5109,9 +5109,9 @@
 < e = a*b*c
 < Printing the BDD graph for f: ptr to the nodes, T & E children
 < : 4 nodes 1 leaves 1 minterms
-< ID =  0x4c42e	index = 0	T = 0x4c42d	E = !1        
-< ID =  0x4c42d	index = 1	T = 0x4c42b	E = !1        
-< ID =  0x4c42b	index = 2	T = 1        	E = !1        
+< ID =  0x1355ae	index = 0	T = 0x1355ad	E = !1        
+< ID =  0x1355ad	index = 1	T = 0x1355ab	E = !1        
+< ID =  0x1355ab	index = 2	T = 1        	E = !1        
 < 
 < 
 < Printing the minterms of f:
@@ -5138,9 +5138,9 @@
 < e = a*b*c
 < Printing the BDD graph for f: ptr to the nodes, T & E children
 < : 4 nodes 1 leaves 1 minterms
-< ID =  0x71f2e	index = 0	T = 0x71f2d	E = !1        
-< ID =  0x71f2d	index = 1	T = 0x71f2b	E = !1        
-< ID =  0x71f2b	index = 2	T = 1        	E = !1        
+< ID =  0xec12e	index = 0	T = 0xec12d	E = !1        
+< ID =  0xec12d	index = 1	T = 0xec12b	E = !1        
+< ID =  0xec12b	index = 2	T = 1        	E = !1        
 < 
 < 
 < Printing the minterms of f:
@@ -5182,9 +5182,9 @@
 < e = a*b*c
 < Printing the BDD graph for f: ptr to the nodes, T & E children
 < : 4 nodes 1 leaves 1 minterms
-< ID =  0x6c5ae	index = 0	T = 0x6c5ad	E = !1        
-< ID =  0x6c5ad	index = 1	T = 0x6c5ab	E = !1        
-< ID =  0x6c5ab	index = 2	T = 1        	E = !1        
+< ID =  0x8df2e	index = 0	T = 0x8df2d	E = !1        
+< ID =  0x8df2d	index = 1	T = 0x8df2b	E = !1        
+< ID =  0x8df2b	index = 2	T = 1        	E = !1        
 < 
 < 
 < Printing the minterms of f:
