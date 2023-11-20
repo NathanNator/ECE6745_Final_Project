@@ -1,6 +1,0 @@
-<map id="EpDoubleStruct" name="EpDoubleStruct">
-<area shape="rect" id="node1" title="Extended precision double to keep very large value." alt="" coords="79,184,193,211"/>
-<area shape="rect" id="node2" href="$unionEpTypeUnion.html" title="Different views of a double." alt="" coords="85,95,187,121"/>
-<area shape="rect" id="node3" href="$structIeeeDoubleStruct.html" title="IEEE double struct." alt="" coords="5,5,128,32"/>
-<area shape="rect" id="node4" href="$structIeeeNanStruct.html" title="IEEE double NaN struct." alt="" coords="152,5,259,32"/>
-</map>

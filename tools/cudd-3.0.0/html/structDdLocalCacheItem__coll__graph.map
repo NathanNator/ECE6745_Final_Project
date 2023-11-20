@@ -1,5 +1,0 @@
-<map id="DdLocalCacheItem" name="DdLocalCacheItem">
-<area shape="rect" id="node1" title="Generic local cache item." alt="" coords="5,109,140,136"/>
-<area shape="rect" id="node2" href="$structDdNode.html" title="Decision diagram node." alt="" coords="128,5,199,32"/>
-<area shape="rect" id="node3" href="$structDdChildren.html" title="The two children of a non&#45;terminal node." alt="" coords="164,109,251,136"/>
-</map>

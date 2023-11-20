@@ -4,6 +4,15 @@
 # Prerequisites
 *.d
 
+# CUDD Package: 
+!polynomial_division/
+polynomial_division/*
+polynomial_division/cudd-3.0.0/*
+!polynomial_division/cudd-3.0.0/
+polynomial_division/cudd-3.0.0/nanotrav/*
+!polynomial_division/cudd-3.0.0/nanotrav/
+!polynomial_division/cudd-3.0.0/nanotrav/main.c
+
 # Compiled Object files
 *.slo
 *.lo

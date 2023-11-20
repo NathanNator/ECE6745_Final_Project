@@ -1,5 +1,0 @@
-<map id="GlobalQueueItem" name="GlobalQueueItem">
-<area shape="rect" id="node1" title="Item of the queue used in the levelized traversal of the BDD." alt="" coords="5,111,128,137"/>
-<area shape="rect" id="node2" href="$structDdNode.html" title="Decision diagram node." alt="" coords="178,5,249,32"/>
-<area shape="rect" id="node3" href="$structDdChildren.html" title="The two children of a non&#45;terminal node." alt="" coords="214,111,301,137"/>
-</map>
