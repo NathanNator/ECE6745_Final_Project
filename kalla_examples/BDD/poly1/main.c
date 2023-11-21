@@ -108,6 +108,8 @@ static int ntrReadTree (DdManager *dd, char *treefile, int nvars);
 /*---------------------------------------------------------------------------*/
 /* Definition of exported functions                                          */
 /*---------------------------------------------------------------------------*/
+void BDD_dotfile (DdManager* manager, DdNode* node, char* fname);
+void ZDD_dotfile (DdManager* manager, DdNode* node, char* fname);
 
 /**Function********************************************************************
 
@@ -143,10 +145,7 @@ main(
     /****** Priyank's additions *******/
     DdNode *one, *zero;
     DdNode *a, *b, *c, *d, *e, *g;
-    //DdNode *ab, *ac, *bc; /* Question 1 */
-    //DdNode *f_b, *f_bbar, *f_g, *f_gbar;
-    //DdNode *func1, *func2;
-    //DdNode *contain1, *contain2;    
+    DdNode *x, *y, *z, *w, *v, *h;    
     /*********************************/
 
 
@@ -189,24 +188,19 @@ main(
     printf("Printing the minterms of f:\nabc  e\n");
     Cudd_PrintMinterm(dd, e); 
 
-    /* Write in the dot files to display the bdd's */
-    const char* filename = "a_AND_b_AND_c_BDD.dot";
-    FILE* outfile = fopen(filename, "w");
-    Cudd_DumpDot(dd, 1, &e, NULL, NULL, outfile);
-    fclose(outfile);
-    printf("\nWritten to file: %s\n", filename );
+    /* 
+    Generate dot files and run them 
+    dot -Txlib "abc_bdd.dot"
+    dot -Txlib "abc_zdd.dot"
+    */
 
+    BDD_dotfile(dd, e, "abc_bdd");
 
     /* BDD to ZDD */
     g = Cudd_zddPortFromBdd(dd, e);
     Cudd_Ref(g);
 
-    /* Write in the dot files to display the zdd's */
-    const char* filename1 = "a_AND_b_AND_c_ZDD.dot";
-    FILE* outfile1 = fopen(filename1, "w");
-    Cudd_zddDumpDot(dd, 1, &g, NULL, NULL, outfile1);
-    fclose(outfile1);
-    printf("\nWritten to file: %s\n", filename1 );
+    ZDD_dotfile(dd, g, "abc_zdd");
 
     exit(0); 
 
@@ -216,6 +210,29 @@ main(
 /*---------------------------------------------------------------------------*/
 /* Definition of internal functions                                          */
 /*---------------------------------------------------------------------------*/
+void BDD_dotfile (DdManager* manager, DdNode* node, char* fname)
+{
+    char filename[64];
+    sprintf(filename, "%s.dot", fname);
+    //const char* filename = ".dot", fname;
+    FILE* outfile = fopen(filename, "w");
+    Cudd_DumpDot(manager, 1, &node, NULL, NULL, outfile);
+    fclose(outfile);
+    printf("\nWritten to file: %s\n", filename );
+}
+
+void ZDD_dotfile (DdManager* manager, DdNode* node, char* fname)
+{
+    char filename[64];
+    sprintf(filename, "%s.dot", fname);
+    //const char* filename = ".dot", fname;
+    FILE* outfile = fopen(filename, "w");
+    Cudd_zddDumpDot(manager, 1, &node, NULL, NULL, outfile);
+    fclose(outfile);
+    printf("\nWritten to file: %s\n", filename );
+}
+
+
 
 /*---------------------------------------------------------------------------*/
 /* Definition of static functions                                            */
