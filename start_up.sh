@@ -1,15 +1,14 @@
 #!/bin/bash          
 echo Start Up Script for CUDD Library 
 
-WORKING_DIR="$(pwd)"
-WORKING_DIR+="/polynomial_division/cudd-3.0.0/cudd/"
-
+CUDD_LIB="$(pwd)"
+CUDD_LIB+="/polynomial_division/cudd-3.0.0/nanotrav/nanotrav"
 
 CUDD_DIR="$(pwd)"
 CUDD_DIR+="/polynomial_division/cudd-3.0.0/"
 
 # If CUDD Lib does not exists
-if ! [ -d "$WORKING_DIR" ]; 
+if ! [ -f "$CUDD_LIB" ]; 
 then 
     
     echo CUDD Library does not exists.
