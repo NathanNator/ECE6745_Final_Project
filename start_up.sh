@@ -22,11 +22,10 @@ then
 
     cd polynomial_division/cudd-3.0.0
     ./configure
+    git restore Makefile
     make
     make check
 
 else 
     echo CUDD Library already exists in working directory
 fi
-
-

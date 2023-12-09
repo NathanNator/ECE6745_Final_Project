@@ -7,6 +7,7 @@ polynomial_division/*/*
 !polynomial_division/*/*/
 !polynomial_division/*/*.c
 !polynomial_division/*/*.h
+!polynomial_division/*/Makefile
 polynomial_division/*/*/*
 !polynomial_division/*/*/*/
 !polynomial_division/*/*/*.c
@@ -15,6 +16,9 @@ polynomial_division/*/*/*/*
 !polynomial_division/*/*/*/*/
 !polynomial_division/*/*/*/*.c
 !polynomial_division/*/*/*/*.h
+
+# GDB Executable
+2 
 
 # swp files
 *.swp 
