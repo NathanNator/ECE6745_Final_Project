@@ -3,19 +3,23 @@ polynomial_division/*
 !polynomial_division/*/
 !polynomial_division/*.c
 !polynomial_division/*.h
+!polynomial_division/*.dot
 polynomial_division/*/*
 !polynomial_division/*/*/
 !polynomial_division/*/*.c
 !polynomial_division/*/*.h
 !polynomial_division/*/Makefile
+!polynomial_division/*/*.dot
 polynomial_division/*/*/*
 !polynomial_division/*/*/*/
 !polynomial_division/*/*/*.c
 !polynomial_division/*/*/*.h
+!polynomial_division/*/*/*.dot
 polynomial_division/*/*/*/*
 !polynomial_division/*/*/*/*/
 !polynomial_division/*/*/*/*.c
 !polynomial_division/*/*/*/*.h
+!polynomial_division/*/*/*/*.dot
 
 # GDB Executable
 2 
