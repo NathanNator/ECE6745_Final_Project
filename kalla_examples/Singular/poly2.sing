@@ -1,23 +1,23 @@
 /*
-poly1.sing
+poly2.sing
 Fernando Araujo, Nathan Sartnurak, Kidus Yohannes
 
 Run on Singular:
-<"poly1.sing";
+<"poly2.sing";
 */
 
 // This is how you declare a ring
 // This is r = Q[a, b, c] with LEX a>b>c
 // Outputs e and d go before PIs: LEX e>d>a>b>c
-ring r = 0, (e, d, a, b, c), lp;
+ring r = 2, (R, s0, x, y, z), lp;
 
 // Uncomment this ring declaration for more experiments
 // lp = LEX, dp = DEGREVLEX, Dp = deglex
 
-// poly f = a * b * c;
+// poly f = x + y*z;
 
-poly g(1) = e + d * c;
-poly g(2) = d + a * b;
+poly g(1) = R + x + s0;
+poly g(2) = s0 + y * z;
 
 printf("g1: %s", g(1));
 printf("g2: %s", g(2));
@@ -30,7 +30,7 @@ ideal J = g(1), g(2);
 poly h(1) = 0;
 poly h(2) = 0;
 poly st_num = 0;
-poly func = e;
+poly func = R;
 
 // 1-step reduction Algorithm
 // /*
@@ -85,9 +85,9 @@ J;
 printf("");
 
 // Divide f by the groebner basis of ideal J
-poly l = reduce(e, J);
+poly l = reduce(R, J);
 // print poly l;
-printf("Reduction of e, J");
+printf("Reduction of R, J");
 l;
 
 // l has to be 0 as f is already in J
