@@ -111,6 +111,7 @@ static int ntrReadTree (DdManager *dd, char *treefile, int nvars);
 void BDD_dotfile (DdManager* manager, DdNode* node, char* fname, char* names);
 void ZDD_dotfile (DdManager* manager, DdNode* node, char* fname, char* names);
 void print_dd(DdManager *gbm, DdNode *dd, int n, int pr); 
+void write_dd (DdManager *gbm, DdNode *dd, char* filename);
 
 /**Function********************************************************************
 
@@ -142,90 +143,95 @@ main(
     int		pr;		/* verbosity level */
     int		reencoded;	/* linear transformations attempted */
 
-
-    /****** Priyank's additions *******/
-    DdNode *one, *zero;
-    DdNode *a, *b, *c, *d, *e, *g;
-    DdNode *x, *y, *z, *w, *v, *h;    
-    /*********************************/
-
-
     /* Initialize manager. We start with 0 variables */
 
     dd = Cudd_Init(0,0,CUDD_UNIQUE_SLOTS,CUDD_CACHE_SLOTS,0);
+    //Cudd_ReduceHeap(dd, CUDD_REORDER_NONE, 0);
     /*startCudd(option,net1->ninputs);*/
     if (dd == NULL) { exit(2); }
 
 
     /************ lets do our work here *************/
-    one = Cudd_ReadOne( dd );
+    DdNode *one = Cudd_ReadOne(dd);
     Cudd_Ref(one); /* referenced for the first time */
 
-    zero = Cudd_Not( one ); /* not the same as Cudd_ReadZero */
+    DdNode *zero = Cudd_Not(one); /* not the same as Cudd_ReadZero */
     /* Cudd_Ref(zero);*/ 
     /* reference count increment not needed because Cudd_Not returns
        the projection */ 
 
-    /***** Add a new variable ***********/
-    /* Primary Inputs */ // /* 
-    a = Cudd_bddNewVar(dd);
-    b = Cudd_bddNewVar(dd);
-    c = Cudd_bddNewVar(dd); // */
+    // ordering = x1 < x2 < x3 < x4
+    // ordering = d < c < b < a 
+    char * names[4] = { "a", "b", "c", "d"};
+    
+    DdNode *a = Cudd_bddNewVar(dd);
+    DdNode *b = Cudd_bddNewVar(dd);
+    DdNode *c = Cudd_bddNewVar(dd);
+    DdNode *d = Cudd_bddNewVar(dd);
 
-    /* e = a*b*c  */ // /* Kalla's example circuit
-    d = Cudd_bddAnd(dd, a, b); // a AND b
-    Cudd_Ref(d);
+    // f1 = a.b.!c + c.a!.b! 
+    DdNode *f1 = Cudd_bddAnd(dd, a, b);
+    Cudd_Ref(f1);
 
-    e = Cudd_bddAnd(dd, d, c); // a AND c  
-    Cudd_Ref(e);
+    // a.b.!c
+    DdNode *f2 = Cudd_bddAnd(dd, f1, Cudd_Not(c));
+    Cudd_Ref(f2);
 
-    char * names[5] = { "a", "b", "c", "z" };
+    // c.!a 
+    DdNode *f3 = Cudd_bddAnd(dd, c, Cudd_Not(a));
+    Cudd_Ref(f3);
 
-    /*************** e = a*b*c ***************/ 
-    printf("e = a*b*c\n");
-    /* print BDD structure of f */
-    printf("\nPrinting the BDD graph for f: ptr to the nodes, T & E children\n");
-    Cudd_PrintDebug(dd, e, 3, 3);
-    printf("\n");
-    printf("Printing the minterms of f:\nabc  e\n");
-    Cudd_PrintMinterm(dd, e); 
+    // c.!a.!b 
+    DdNode *f4 = Cudd_bddAnd(dd, f3, Cudd_Not(b));
+    Cudd_Ref(f4);
 
-    /* 
-    Generate dot files and run them 
-    dot -Txlib "abc_bdd.dot"
-    dot -Txlib "abc_zdd.dot"
-    */
+    // a.b.!c + c.!a.!b 
+    DdNode *f5 = Cudd_bddOr(dd, f2, f4);
+    Cudd_Ref(f5);
 
-    BDD_dotfile(dd, e, "abc_bdd", names);
+    DdNode *f = Cudd_zddPortFromBdd(dd, f5);
+    ZDD_dotfile (dd, f, "ab_c_zdd", names);
 
-    /* BDD to ZDD */
-    g = Cudd_zddPortFromBdd(dd, e);
-    Cudd_Ref(g);
+    // g = c + d
 
-    ZDD_dotfile(dd, g, "abc_zdd", names);
+    // g = c.!.d.!a.!b + d.!c.!b.!a
+    DdNode *g1 = Cudd_bddAnd(dd, c, Cudd_Not(d));
+    Cudd_Ref(g1);
 
-    /*** Create f1, f2 ***/
-    // f1 = e + dc
-    // f2 = d + ab
+    DdNode *g2 = Cudd_bddAnd(dd, g1, Cudd_Not(a));
+    Cudd_Ref(g2);
 
-    // we need to do z -f1-> r1
-    z = Cudd_bddNewVar(dd); // z is e
-    Cudd_Ref(z);
+    DdNode *g3 = Cudd_bddAnd(dd, g2, Cudd_Not(b));
+    Cudd_Ref(g3);
 
-    printf("Printing the minterms of z:");
-    Cudd_PrintMinterm(dd, z); 
-    BDD_dotfile(dd, z, "z_bdd", names);
+    DdNode *g4 = Cudd_bddAnd(dd, d, Cudd_Not(c));
+    Cudd_Ref(g4);
 
-    //r0 = Cudd_bddIte(dd, z, g, e);
-    /*
-    r1 = Cudd_bddDivide(dd, z, e);
-    Cudd_Ref(r1);
+    DdNode *g5 = Cudd_bddAnd(dd, g4, Cudd_Not(a));
+    Cudd_Ref(g5);
 
+    DdNode *g6 = Cudd_bddAnd(dd, g5, Cudd_Not(b));
+    Cudd_Ref(g6);
 
-    printf("Printing the minterms of r1:");
-    Cudd_PrintMinterm(dd, r1); 
-    BDD_dotfile(dd, r1, "r1_bdd");
-    */
+    DdNode *g7 = Cudd_bddOr(dd, g3, g6);
+    Cudd_Ref(g7);
+
+    DdNode *g = Cudd_zddPortFromBdd(dd, g7);
+    ZDD_dotfile (dd, g, "c_d_zdd", names);
+
+    // f + g = f ∪ g - f ∩ g 
+
+    DdNode *a1 = Cudd_zddUnion(dd, f, g);
+    Cudd_Ref(a1);
+
+    DdNode *a2 = Cudd_zddIntersect(dd, f, g);
+    Cudd_Ref(a2);
+
+    // a1 - a2 
+    DdNode *fg = Cudd_zddDiff(dd, a1, a2);
+    Cudd_Ref(fg);
+
+    ZDD_dotfile (dd, fg, "f_g_zdd", names);
 
     exit(0); 
 
@@ -276,6 +282,16 @@ void print_dd (DdManager *gbm, DdNode *dd, int n, int pr )
     Cudd_PrintDebug(gbm, dd, n, pr);  // Prints to the standard output a DD and its statistics: number of nodes, number of leaves, number of minterms.
 }
 
+void write_dd (DdManager *gbm, DdNode *dd, char* filename)
+{
+    FILE *outfile; // output file pointer for .dot file
+    outfile = fopen(filename,"w");
+    DdNode **ddnodearray = (DdNode**)malloc(sizeof(DdNode*)); // initialize the function array
+    ddnodearray[0] = dd;
+    Cudd_DumpDot(gbm, 1, ddnodearray, NULL, NULL, outfile); // dump the function to .dot file
+    free(ddnodearray);
+    fclose (outfile); // close the file */
+}
 
 /*---------------------------------------------------------------------------*/
 /* Definition of static functions                                            */
