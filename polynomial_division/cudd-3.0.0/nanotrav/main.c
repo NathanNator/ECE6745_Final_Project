@@ -110,6 +110,7 @@ static int ntrReadTree (DdManager *dd, char *treefile, int nvars);
 /*---------------------------------------------------------------------------*/
 void BDD_dotfile (DdManager* manager, DdNode* node, char* fname, char* names);
 void ZDD_dotfile (DdManager* manager, DdNode* node, char* fname, char* names);
+void print_dd(DdManager *gbm, DdNode *dd, int n, int pr); 
 
 /**Function********************************************************************
 
@@ -254,6 +255,25 @@ void ZDD_dotfile (DdManager* manager, DdNode* node, char* fname, char* names)
     Cudd_zddDumpDot(manager, 1, &node, (char**)names, NULL, outfile);
     fclose(outfile);
     printf("\nWritten to file: %s\n", filename );
+}
+
+
+/**
+ * Print a dd summary
+ * pr = 0 : prints nothing
+ * pr = 1 : prints counts of nodes and minterms
+ * pr = 2 : prints counts + disjoint sum of product
+ * pr = 3 : prints counts + list of nodes
+ * pr > 3 : prints counts + disjoint sum of product + list of nodes
+ * @param the dd node
+ */
+void print_dd (DdManager *gbm, DdNode *dd, int n, int pr )
+{
+    printf("DdManager nodes: %ld | ", Cudd_ReadNodeCount(gbm)); /*Reports the number of live nodes in BDDs and ADDs*/
+    printf("DdManager vars: %d | ", Cudd_ReadSize(gbm) ); /*Returns the number of BDD variables in existence*/
+    printf("DdManager reorderings: %d | ", Cudd_ReadReorderings(gbm) ); /*Returns the number of times reordering has occurred*/
+    printf("DdManager memory: %ld \n", Cudd_ReadMemoryInUse(gbm) ); /*Returns the memory in use by the manager measured in bytes*/
+    Cudd_PrintDebug(gbm, dd, n, pr);  // Prints to the standard output a DD and its statistics: number of nodes, number of leaves, number of minterms.
 }
 
 
