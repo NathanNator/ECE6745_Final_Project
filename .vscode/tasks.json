@@ -1,0 +1,11 @@
+{
+    "tasks": [
+         {
+            "type": "shell",
+            "label": "make target",
+            "command": "cd ${workspaceFolder}/polynomial_division/cudd-3.0.0; make check",
+            "problemMatcher": [],
+        }
+    ],
+    "version": "2.0.0"
+}

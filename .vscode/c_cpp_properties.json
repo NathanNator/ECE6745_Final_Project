@@ -1,0 +1,33 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/polynomial_division/cudd-3.0.0/cudd",
+                "${workspaceFolder}/polynomial_division/cudd-3.0.0/dddmp",
+                "${workspaceFolder}/polynomial_division/cudd-3.0.0/epd",
+                "${workspaceFolder}/polynomial_division/cudd-3.0.0/mtr",
+                "${workspaceFolder}/polynomial_division/cudd-3.0.0/nanotrav",
+                "${workspaceFolder}/polynomial_division/cudd-3.0.0/st",
+                "${workspaceFolder}/polynomial_division/cudd-3.0.0/util",
+                "${workspaceFolder}/polynomial_division/cudd-3.0.0"
+            ],
+            // "includePath": [
+            //     "/home/u1089358/ECE6745_Final_Project/polynomial_division/cudd-3.0.0/cudd",
+            //     "/home/u1089358/ECE6745_Final_Project/polynomial_division/cudd-3.0.0/dddmp",
+            //     "/home/u1089358/ECE6745_Final_Project/polynomial_division/cudd-3.0.0/epd",
+            //     "/home/u1089358/ECE6745_Final_Project/polynomial_division/cudd-3.0.0/mtr",
+            //     "/home/u1089358/ECE6745_Final_Project/polynomial_division/cudd-3.0.0/nanotrav",
+            //     "/home/u1089358/ECE6745_Final_Project/polynomial_division/cudd-3.0.0/st",
+            //     "/home/u1089358/ECE6745_Final_Project/polynomial_division/cudd-3.0.0/util",
+            //     "/home/u1089358/ECE6745_Final_Project/polynomial_division/cudd-3.0.0"
+            // ],
+            "defines": [],
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "c17",
+            "cppStandard": "c++14",
+            "intelliSenseMode": "linux-clang-x64"
+        }
+    ],
+    "version": 4
+}
