@@ -7,9 +7,9 @@ Run on Singular:
 */
 
 // This is how you declare a ring
-// This is r = Q[a, b, c] with LEX a>b>c
-// Outputs e and d go before PIs: LEX e>d>a>b>c
-ring r = 2, (z, y, x, d, c, b, a), lp;
+// This is r = Q[d, c, b, a] with LEX d>c>b>a
+// Outputs z, y, and x go before PIs: LEX z>y>x>d>c>b>a
+ring r = 2, (z, y, x, d, c, b, a), lp; 
 
 // Uncomment this ring declaration for more experiments
 // lp = LEX, dp = DEGREVLEX, Dp = deglex
@@ -37,10 +37,9 @@ poly h(5) = 0;
 poly h(6) = 0;
 poly h(7) = 0;
 
-poly st_num = 0;
 poly func = z;
 
-// 1-step reduction Algorithm
+// 1-step reduction Algorithm (Classical reduction)
 // /*
 printf("Begin the optimized algorithm with a for loop");
  
@@ -73,14 +72,122 @@ for (int i = 1; i < 8; i++)
 	 leadmonom(h(i));
 
          printf("");
-         //printf("");
-
 	 break;
       }
    }
 }
-
 // */
+
+
+ /* while loop (needs work)
+printf("Begin the optimized algorithm with a for loop");
+
+// variables
+poly h = func;
+poly u = 0;
+poly r = 0;
+ 
+//for (int i = 1; i < 8; i++)
+while (h != 0)
+{
+   for (int j = 1; j < size(J) + 1; j++)
+   {
+      // This a 1-step reduction (1 step of division)
+      if (lead(h)/lead(J[j]) != 0)
+      {
+	 printf("-------------------------------");
+	 printf("i = %s",i);
+         printf("j = %s",j);
+
+	 u = lead(h)/lead(J[j]);
+         printf("u = %s", u);
+         printf("h = %s", h);
+	 printf("");
+
+	 printf("%s --g(%s)--> r", h, j);
+         r = h - (lead(h)/lead(J[j]))*J[j];
+
+         h = r;
+         printf("r = %s", r);
+
+         printf("");
+
+	 // This is how you print a value
+	 printf("Leading Coefficient of r");
+	 leadcoef(r);
+	 printf("Leading Monomial of r");
+	 leadmonom(r);
+
+         printf("");
+	 break;
+      }
+   }
+}
+// */
+
+
+
+
+
+
+/* Improved Reduction with one-step
+
+rj = ri + q*fj
+index j = 1 + i
+
+ri = xj*[then(ri)] + [else(ri)]
+fj = xj + [else(fj)]
+xj = top variable of ri and fj
+q  = (then(ri))
+*/
+
+// call functions
+//poly J[1] = g(1) = z + y*d + y + d;
+//poly J[2] = g(2) = y + x*c + x + c;
+//poly J[3] = g(3) = x + a*b + a + b;
+
+// remainders
+poly r(1) = 0;
+poly r(2) = 0;
+poly r(3) = 0;
+
+// variables
+poly then_r = 0;
+poly else_r = 0;
+poly else_f = 0;
+poly xj     = 0;
+poly q      = 0;
+poly ri     = 0;
+poly fj     = 0;
+
+// /* 
+printf("Improved Reduction with one-step");
+for (int i = 1; i < size(J) + 1; i++)
+{
+   if (lead(func)/lead(J[i]) != 0)
+   {
+      xj     = lead(J[i]);
+
+      else_r = subst(func, xj, 0);
+      then_r = func - else_r;
+      then_r = subst(then_r, xj, 1);
+
+      else_f = subst(J[i], xj, 0);
+
+      ri     = xj*then_r + else_r;
+      fj     = xj + else_f;
+      q      = then_r;
+
+      r(i)   = ri + q*fj;
+      printf("r(%s) = %s", i, r(i));
+
+      // recall remainder for next operation
+      func = r(i);
+   }
+} // */
+
+
+printf("");
 
 
 // Compute a Grobner Basis
