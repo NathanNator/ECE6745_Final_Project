@@ -110,6 +110,7 @@ static int ntrReadTree (DdManager *dd, char *treefile, int nvars);
 /*---------------------------------------------------------------------------*/
 void BDD_dotfile (DdManager* manager, DdNode* node, char* fname, char* names);
 void ZDD_dotfile (DdManager* manager, DdNode* node, char* fname, char* names);
+DdNode* Cudd_zddModSum (DdManager* manager, DdNode* a, DdNode* b);
 void print_dd(DdManager *gbm, DdNode *dd, int n, int pr); 
 
 /**Function********************************************************************
@@ -145,8 +146,12 @@ main(
 
     /****** Priyank's additions *******/
     DdNode *one, *zero;
-    DdNode *a, *b, *c, *d, *e, *g;
-    DdNode *x, *y, *z, *w, *v, *h;    
+    // DdNode *a, *b, *c, *d, *e, *g;
+    // DdNode *x, *y, *z, *w, *v, *h;
+    // DdNode *f1, *f2, *f3;
+    // DdNode *f1_zdd;
+    // DdNode *r0, *r1, *r2, *r3;
+    // DdNode *r0_zdd;
     /*********************************/
 
 
@@ -167,67 +172,194 @@ main(
        the projection */ 
 
     /***** Add a new variable ***********/
-    /* Primary Inputs */ // /* 
-    a = Cudd_bddNewVar(dd);
-    b = Cudd_bddNewVar(dd);
-    c = Cudd_bddNewVar(dd); // */
+    
+    /* Primary Inputs */ // /*
+    //z = Cudd_bddNewVar(dd);
+    // y = Cudd_bddNewVar(dd);
+    // x = Cudd_bddNewVar(dd);
+    //d = Cudd_bddNewVar(dd);
+    // c = Cudd_bddNewVar(dd);
+    // b = Cudd_bddNewVar(dd);
+    // a = Cudd_bddNewVar(dd); // */
 
-    /* e = a*b*c  */ // /* Kalla's example circuit
-    d = Cudd_bddAnd(dd, a, b); // a AND b
-    Cudd_Ref(d);
+    //char * names[7] = { "z", "y", "x", "d", "c", "b", "a" };
+    // char * names[3] = { "y", "x", "c" };
 
-    e = Cudd_bddAnd(dd, d, c); // a AND c  
-    Cudd_Ref(e);
+    DdNode *a = Cudd_bddNewVar(dd);
+    DdNode *b = Cudd_bddNewVar(dd);
+    DdNode *c = Cudd_bddNewVar(dd);
+    DdNode *d = Cudd_bddNewVar(dd);
+    char * names[4] = { "a", "b", "c", "d" };
 
-    char * names[5] = { "a", "b", "c", "z" };
 
-    /*************** e = a*b*c ***************/ 
-    printf("e = a*b*c\n");
-    /* print BDD structure of f */
-    printf("\nPrinting the BDD graph for f: ptr to the nodes, T & E children\n");
-    Cudd_PrintDebug(dd, e, 3, 3);
-    printf("\n");
-    printf("Printing the minterms of f:\nabc  e\n");
-    Cudd_PrintMinterm(dd, e); 
+    /// create f = ab + c ///
+    DdNode *f = Cudd_bddAnd(dd, a, b); Cudd_Ref(f);
+    f = Cudd_bddAnd(dd, f, Cudd_Not(c));
+    f = Cudd_bddAnd(dd, f, Cudd_Not(d));
+    f = Cudd_zddPortFromBdd(dd, f);
+    // f = abc'd'
+    
 
-    /* 
-    Generate dot files and run them 
-    dot -Txlib "abc_bdd.dot"
-    dot -Txlib "abc_zdd.dot"
-    */
+    // temp = c
+    DdNode *temp = Cudd_bddAnd(dd, Cudd_Not(a), Cudd_Not(b)); Cudd_Ref(temp);
+    temp = Cudd_bddAnd(dd, temp, c);
+    temp = Cudd_bddAnd(dd, temp, Cudd_Not(d));
+    temp = Cudd_zddPortFromBdd(dd, temp);
 
-    BDD_dotfile(dd, e, "abc_bdd", names);
+    // f = abc'd' + c
+    f = Cudd_zddUnion(dd, f, temp);
+    Cudd_PrintDebug(dd, f, 1, 2);
+    ZDD_dotfile(dd, f, "f_zdd", names);
 
-    /* BDD to ZDD */
-    g = Cudd_zddPortFromBdd(dd, e);
-    Cudd_Ref(g);
 
-    ZDD_dotfile(dd, g, "abc_zdd", names);
+    /// create g = c + d ///
 
-    /*** Create f1, f2 ***/
-    // f1 = e + dc
-    // f2 = d + ab
+    // temp = a'b'
+    DdNode *temp1 = Cudd_bddAnd(dd, Cudd_Not(a), Cudd_Not(b)); Cudd_Ref(temp1);
 
-    // we need to do z -f1-> r1
-    z = Cudd_bddNewVar(dd); // z is e
-    Cudd_Ref(z);
+    // g = a'b'cd'
+    DdNode *g = Cudd_bddAnd(dd, temp1, c); Cudd_Ref(g);
+    g = Cudd_bddAnd(dd, g, Cudd_Not(d));
+    g = Cudd_zddPortFromBdd(dd, g);
 
-    printf("Printing the minterms of z:");
-    Cudd_PrintMinterm(dd, z); 
-    BDD_dotfile(dd, z, "z_bdd", names);
+    
+    // temp2 = d aka. a'b'c'd
+    DdNode *temp2 = Cudd_bddAnd(dd, temp1, Cudd_Not(c));
+    temp2 = Cudd_bddAnd(dd, temp2, d);
+    temp2 = Cudd_zddPortFromBdd(dd, temp2);
 
-    //r0 = Cudd_bddIte(dd, z, g, e);
+
+    // g = c + d
+    g = Cudd_zddUnion(dd, g, temp2);
+    Cudd_PrintDebug(dd, g, 1, 2);
+    ZDD_dotfile(dd, g, "g_zdd", names);
+
+
+    // apply f + g == ab + c + c + d = ab + d
+
+    DdNode *f_g = Cudd_zddModSum(dd, f, g);
+    Cudd_PrintDebug(dd, f_g, 1, 2);
+    ZDD_dotfile(dd, f_g, "f_g_zdd", names);
+
+
+
+
+    // r1_zdd = yd
+    // r1 = Cudd_bddAnd(dd, y, d);
+    // Cudd_Ref(r1);
+    // DdNode *r1_zdd = Cudd_zddPortFromBdd(dd, r1);
+    // ZDD_dotfile(dd, r1_zdd, "r1_zdd", names);
+
+    // // r2_zdd = yd'
+    // r2 = Cudd_bddAnd(dd, y, Cudd_Not(d));
+    // Cudd_Ref(r2);
+    // DdNode *r2_zdd = Cudd_zddPortFromBdd(dd, r2);
+    // ZDD_dotfile(dd, r2_zdd, "r2_zdd", names);
+
+    // // r3_zdd = y'd
+    // r3 = Cudd_bddAnd(dd, Cudd_Not(y), d);
+    // Cudd_Ref(r3);
+    // DdNode *r3_zdd = Cudd_zddPortFromBdd(dd, r3);
+    // ZDD_dotfile(dd, r3_zdd, "r3_zdd", names);
+    
+    
+    // DdNode *r4 = Cudd_zddUnion(dd, r1_zdd, r2_zdd);
+    // r4 = Cudd_zddUnion(dd, r4, r3_zdd);
+    // Cudd_Ref(r4);
+
+    // ZDD_dotfile(dd, r4, "r4_zdd", names);
+    
+    // //DdNode *r3_zdd = Cudd_zddPortFromBdd(dd, r3);
+    // ZDD_dotfile(dd, r3, "r3_zdd", names);
+
+    // DdNode *r4 = Cudd_zddIntersect(dd, r1_zdd, r2_zdd);
+    // Cudd_Ref(r4);
+    // //DdNode *r4_zdd = Cudd_zddPortFromBdd(dd, r4);
+    // ZDD_dotfile(dd, r4, "r4_zdd", names);
+
+
+    // DdNode *r5 = Cudd_zddDiff(dd, r3, r4);
+    // Cudd_Ref(r5);
+    // //DdNode *r5_zdd = Cudd_zddPortFromBdd(dd, r5);
+    // ZDD_dotfile(dd, r5, "r5_zdd", names);
+
+    exit(0);
+
+
+///// y x c , Union to combine zdds ////
+/*
+    f2 = Cudd_bddAnd(dd, y, Cudd_Not(x));
+    f2 = Cudd_bddAnd(dd, f2, Cudd_Not(c));
+    Cudd_Ref(f2);
+    DdNode *f2_zdd = Cudd_zddPortFromBdd(dd, f2);
+    Cudd_Ref(f2_zdd);
+    // f2 = yx'c'
+
+    DdNode *temp0 = Cudd_bddAnd(dd, x, c);
+    temp0 = Cudd_bddAnd(dd, temp0, Cudd_Not(y));
+    Cudd_Ref(temp0);
+    DdNode *temp0_zdd = Cudd_zddPortFromBdd(dd, temp0);
+    Cudd_Ref(temp0_zdd);
+    // temp0 = y'xc
+
+    DdNode *temp1 = Cudd_bddAnd(dd, x, Cudd_Not(y));
+    temp1 = Cudd_bddAnd(dd, temp1, Cudd_Not(c));
+    Cudd_Ref(temp1);
+    DdNode *temp1_zdd = Cudd_zddPortFromBdd(dd, temp1);
+    Cudd_Ref(temp1_zdd);
+    
+    // temp1 = y'xc'
+
+    DdNode *temp2 = Cudd_bddAnd(dd, c, Cudd_Not(y));
+    temp2 = Cudd_bddAnd(dd, temp2, Cudd_Not(x));
+    Cudd_Ref(temp2);
+    DdNode *temp2_zdd = Cudd_zddPortFromBdd(dd, temp2);
+    Cudd_Ref(temp2_zdd);
+    // temp2 = y'x'c
+
+    DdNode *f2_final = Cudd_zddUnion(dd, f2_zdd, temp0_zdd);
+    f2_final = Cudd_zddUnion(dd, f2_final, temp1_zdd);
+    f2_final = Cudd_zddUnion(dd, f2_final, temp2_zdd);
+    Cudd_Ref(f2_final);
+    // f2 = y + xc + x + c
+
+    ZDD_dotfile(dd, f2_final, "f2_zdd", names);
+
+    exit(0);
+*/
+
+
+    ///// create f1, f2, f3 /////
+
+    // f1 = z + yd + y + d
     /*
-    r1 = Cudd_bddDivide(dd, z, e);
+    f1 = Cudd_bddAnd(dd, y, d); // f1 = yd
+    f1 = Cudd_bddOr(dd, f1, z); // f1 = z + yd
+    f1 = Cudd_bddOr(dd, f1, y); // f1 = z + yd + y
+    f1 = Cudd_bddOr(dd, f1, d); // f1 = z + yd + y + d
+    Cudd_Ref(f1);
+
+    f1_zdd = Cudd_zddPortFromBdd(dd, f1);
+    Cudd_Ref(f1_zdd);
+
+    ///// TODO: create f2, f3 ////
+
+    ///// compute r0 --f1--> r1
+    r0 = z;
+    r0_zdd = Cudd_zddPortFromBdd(dd, r0);
+    Cudd_Ref(r0_zdd);
+    r1 = cuddZddDivide(dd, r0_zdd, f1_zdd);
     Cudd_Ref(r1);
 
+    // display result
+    printf("printing r0 --f1--> r1\n");
+    ZDD_dotfile(dd, r0_zdd, "r0_zdd", names);
+    ZDD_dotfile(dd, f1_zdd, "f1_zdd", names);
+    ZDD_dotfile(dd, r1, "r1_zdd", names);
 
-    printf("Printing the minterms of r1:");
-    Cudd_PrintMinterm(dd, r1); 
-    BDD_dotfile(dd, r1, "r1_bdd");
+
+    exit(0);
     */
-
-    exit(0); 
 
 } /* end of main */
 
@@ -255,6 +387,17 @@ void ZDD_dotfile (DdManager* manager, DdNode* node, char* fname, char* names)
     Cudd_zddDumpDot(manager, 1, &node, (char**)names, NULL, outfile);
     fclose(outfile);
     printf("\nWritten to file: %s\n", filename );
+}
+
+
+DdNode* Cudd_zddModSum (DdManager* dd, DdNode* a, DdNode* b)
+{
+    DdNode *uni = Cudd_zddUnion(dd, a, b); Cudd_Ref(uni);
+    DdNode *isect = Cudd_zddIntersect(dd, a, b); Cudd_Ref(isect);
+    DdNode *diff = Cudd_zddDiff(dd, uni, isect); Cudd_Ref(diff);
+    Cudd_RecursiveDerefZdd(dd, uni);
+    Cudd_RecursiveDerefZdd(dd, isect);
+    return diff;
 }
 
 
