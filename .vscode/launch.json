@@ -13,7 +13,7 @@
             "program": "${workspaceFolder}/polynomial_division/cudd-3.0.0/nanotrav/nanotrav",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/polynomial_division/cudd-3.0.0",
             "environment": [],
             "externalConsole": false, //set to true to see output in cmd instead
             "MIMode": "gdb",

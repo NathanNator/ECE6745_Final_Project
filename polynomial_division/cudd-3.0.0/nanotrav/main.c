@@ -111,7 +111,8 @@ static int ntrReadTree (DdManager *dd, char *treefile, int nvars);
 void BDD_dotfile (DdManager* manager, DdNode* node, char* fname, char* names);
 void ZDD_dotfile (DdManager* manager, DdNode* node, char* fname, char* names);
 DdNode* Cudd_zddModSum (DdManager* manager, DdNode* a, DdNode* b);
-DdNode* Cudd_DC(DdManager* dd, DdNode* a);
+DdNode* Cudd_zddDC(DdManager* dd, DdNode* a);
+DdNode* Cudd_zddAndGate(DdManager* dd, DdNode* z, DdNode* a, DdNode* b);
 void print_dd(DdManager *gbm, DdNode *dd, int n, int pr); 
 
 /**Function********************************************************************
@@ -153,11 +154,9 @@ main(
     /* Initialize manager. We start with 0 variables */
 
     dd = Cudd_Init(0,0,CUDD_UNIQUE_SLOTS,CUDD_CACHE_SLOTS,0);
+    Cudd_ReduceHeap(dd, CUDD_REORDER_NONE, 0);
     /*startCudd(option,net1->ninputs);*/
     if (dd == NULL) { exit(2); }
-
-    Cudd_ReduceHeap(dd, CUDD_REORDER_NONE, 0);
-
 
     /************ lets do our work here *************/
     one = Cudd_ReadOne( dd );
@@ -179,40 +178,27 @@ main(
     DdNode *b = Cudd_bddNewVar(dd);
     DdNode *a = Cudd_bddNewVar(dd); // */
 
-    char * names[7] = { "z", "y", "x", "d", "c", "b", "a" };
+    char *names[7] = { "z", "y", "x", "d", "c", "b", "a"};
 
-    DdNode *z_zdd = Cudd_DC(dd, z); Cudd_Ref(z_zdd);
-    DdNode *y_zdd = Cudd_DC(dd, y); Cudd_Ref(y_zdd);
-    DdNode *x_zdd = Cudd_DC(dd, x); Cudd_Ref(x_zdd);
-    DdNode *d_zdd = Cudd_DC(dd, d); Cudd_Ref(d_zdd);
-    DdNode *c_zdd = Cudd_DC(dd, c); Cudd_Ref(c_zdd);
-    DdNode *b_zdd = Cudd_DC(dd, b); Cudd_Ref(b_zdd);
-    DdNode *a_zdd = Cudd_DC(dd, a); Cudd_Ref(a_zdd);
-    
+    DdNode *z_zdd = Cudd_zddDC(dd, z); Cudd_Ref(z_zdd);
+    DdNode *y_zdd = Cudd_zddDC(dd, y); Cudd_Ref(y_zdd);
+    DdNode *x_zdd = Cudd_zddDC(dd, x); Cudd_Ref(x_zdd);
+    DdNode *d_zdd = Cudd_zddDC(dd, d); Cudd_Ref(d_zdd);
+    DdNode *c_zdd = Cudd_zddDC(dd, c); Cudd_Ref(c_zdd);
+    DdNode *b_zdd = Cudd_zddDC(dd, b); Cudd_Ref(b_zdd);
+    DdNode *a_zdd = Cudd_zddDC(dd, a); Cudd_Ref(a_zdd);
 
-    // create f1 = z + yd + y + d
-    DdNode *yd_zdd = Cudd_zddUnateProduct(dd, y_zdd, d_zdd); Cudd_Ref(yd_zdd);
-    DdNode *f1 = Cudd_zddModSum(dd, z_zdd, yd_zdd);
-    f1 = Cudd_zddModSum(dd, f1, y_zdd);
-    f1 = Cudd_zddModSum(dd, f1, d_zdd); Cudd_Ref(f1);
-
-    ZDD_dotfile(dd, f1, "f1_zdd", names);
+    // f1 = z + yd + y + d
+    DdNode *f1 = Cudd_zddAndGate(dd, z_zdd, y_zdd, d_zdd);
+    ZDD_dotfile(dd, f1, "../../zdd_plots/f1_zdd", names);
 
     // create f2 = y + xc + x + c
-    DdNode *xc_zdd = Cudd_zddUnateProduct(dd, x_zdd, c_zdd); Cudd_Ref(xc_zdd);
-    DdNode *f2 = Cudd_zddModSum(dd, y_zdd, xc_zdd);
-    f2 = Cudd_zddModSum(dd, f2, x_zdd);
-    f2 = Cudd_zddModSum(dd, f2, c_zdd); Cudd_Ref(f2);
-
-    ZDD_dotfile(dd, f2, "f2_zdd", names);
+    DdNode *f2 = Cudd_zddAndGate(dd, y_zdd, x_zdd, c_zdd);
+    ZDD_dotfile(dd, f2, "../../zdd_plots/f2_zdd", names);
 
     // create f3 = x + ba + b + a
-    DdNode *ba_zdd = Cudd_zddUnateProduct(dd, b_zdd, a_zdd); Cudd_Ref(ba_zdd);
-    DdNode *f3 = Cudd_zddModSum(dd, x_zdd, ba_zdd);
-    f3 = Cudd_zddModSum(dd, f3, b_zdd);
-    f3 = Cudd_zddModSum(dd, f3, a_zdd); Cudd_Ref(f3);
-
-    ZDD_dotfile(dd, f3, "f3_zdd", names);
+    DdNode *f3 = Cudd_zddAndGate(dd, x_zdd, b_zdd, a_zdd);
+    ZDD_dotfile(dd, f3, "../../zdd_plots/f3_zdd", names);
 
 
     // improved one step reduction!
@@ -224,7 +210,7 @@ main(
 
     DdNode *r1 = Cudd_zddUnateProduct(dd, r0_T, f1_E);
     r1 = Cudd_zddModSum(dd, r1, r0_E); Cudd_Ref(r1);
-    ZDD_dotfile(dd, r1, "r1_zdd", names);
+    ZDD_dotfile(dd, r1, "../../zdd_plots/r1_zdd", names);
 
 
     // r1 --f2--> r2
@@ -234,7 +220,7 @@ main(
 
     DdNode *r2 = Cudd_zddUnateProduct(dd, r1_T, f2_E);
     r2 = Cudd_zddModSum(dd, r2, r1_E); Cudd_Ref(r2);
-    ZDD_dotfile(dd, r2, "r2_zdd", names);
+    ZDD_dotfile(dd, r2, "../../zdd_plots/r2_zdd", names);
     Cudd_zddPrintCover(dd, r2);
 
 
@@ -245,8 +231,9 @@ main(
 
     DdNode *r3 = Cudd_zddUnateProduct(dd, r2_T, f3_E);
     r3 = Cudd_zddModSum(dd, r3, r2_E); Cudd_Ref(r3);
-    ZDD_dotfile(dd, r3, "r3_zdd", names);
+    ZDD_dotfile(dd, r3, "../../zdd_plots/r3_zdd", names);
     Cudd_zddPrintMinterm(dd, r3);
+
 
     // TODO: - Generalize in an algorithm
     // - loop through all f2, f2, f3
@@ -260,6 +247,7 @@ main(
 /*---------------------------------------------------------------------------*/
 /* Definition of internal functions                                          */
 /*---------------------------------------------------------------------------*/
+
 void BDD_dotfile (DdManager* manager, DdNode* node, char* fname, char* names)
 {
     char filename[64];
@@ -282,7 +270,6 @@ void ZDD_dotfile (DdManager* manager, DdNode* node, char* fname, char* names)
     printf("\nWritten to file: %s\n", filename );
 }
 
-
 DdNode* Cudd_zddModSum (DdManager* dd, DdNode* a, DdNode* b)
 {
     DdNode *uni = Cudd_zddUnion(dd, a, b); Cudd_Ref(uni);
@@ -293,8 +280,7 @@ DdNode* Cudd_zddModSum (DdManager* dd, DdNode* a, DdNode* b)
     return diff;
 }
 
-
-DdNode* Cudd_DC(DdManager* dd, DdNode* a)
+DdNode* Cudd_zddDC(DdManager* dd, DdNode* a)
 {
     DdNode *a_dc = a; Cudd_Ref(a_dc);
     DdNode *x_town; 
@@ -311,6 +297,17 @@ DdNode* Cudd_DC(DdManager* dd, DdNode* a)
     return a_dc;
 }
 
+
+DdNode* Cudd_zddAndGate(DdManager* dd, DdNode* z, DdNode* a, DdNode* b)
+{
+    // create f = z + ab + a + b
+    DdNode *ab_zdd = Cudd_zddUnateProduct(dd, a, b); Cudd_Ref(ab_zdd);
+    DdNode *f = Cudd_zddModSum(dd, z, ab_zdd);
+    f = Cudd_zddModSum(dd, f, a);
+    f = Cudd_zddModSum(dd, f, b); Cudd_Ref(f);
+
+    return f; 
+}
 
 /**
  * Print a dd summary
