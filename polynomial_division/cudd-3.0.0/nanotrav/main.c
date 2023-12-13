@@ -211,6 +211,18 @@ main(
 
     ZDD_dotfile(dd, f3, "f3_zdd", names);
 
+
+    // improved one step reduction!
+    /// r0 = z -f1-> r1
+    DdNode *r0 = z_zdd;
+    DdNode *r0_T = Cudd_T(r0); Cudd_Ref(r0_T);
+    DdNode *r0_E = Cudd_E(r0); Cudd_Ref(r0_E);
+    DdNode *f1_E = Cudd_E(f1); Cudd_Ref(f1_E);
+
+    DdNode *r1 = Cudd_zddProduct(dd, r0_T, f1_E);
+    r1 = Cudd_zddModSum(dd, r1, r0_E); Cudd_Ref(r1);
+    ZDD_dotfile(dd, r1, "r1_zdd", names);
+
     exit(0);
 
 } /* end of main */
