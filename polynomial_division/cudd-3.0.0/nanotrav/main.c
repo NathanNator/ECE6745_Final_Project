@@ -156,6 +156,8 @@ main(
     /*startCudd(option,net1->ninputs);*/
     if (dd == NULL) { exit(2); }
 
+    Cudd_ReduceHeap(dd, CUDD_REORDER_NONE, 0);
+
 
     /************ lets do our work here *************/
     one = Cudd_ReadOne( dd );
@@ -186,9 +188,10 @@ main(
     DdNode *c_zdd = Cudd_DC(dd, c); Cudd_Ref(c_zdd);
     DdNode *b_zdd = Cudd_DC(dd, b); Cudd_Ref(b_zdd);
     DdNode *a_zdd = Cudd_DC(dd, a); Cudd_Ref(a_zdd);
+    
 
     // create f1 = z + yd + y + d
-    DdNode *yd_zdd = Cudd_zddProduct(dd, y_zdd, d_zdd); Cudd_Ref(yd_zdd);
+    DdNode *yd_zdd = Cudd_zddUnateProduct(dd, y_zdd, d_zdd); Cudd_Ref(yd_zdd);
     DdNode *f1 = Cudd_zddModSum(dd, z_zdd, yd_zdd);
     f1 = Cudd_zddModSum(dd, f1, y_zdd);
     f1 = Cudd_zddModSum(dd, f1, d_zdd); Cudd_Ref(f1);
@@ -196,7 +199,7 @@ main(
     ZDD_dotfile(dd, f1, "f1_zdd", names);
 
     // create f2 = y + xc + x + c
-    DdNode *xc_zdd = Cudd_zddProduct(dd, x_zdd, c_zdd); Cudd_Ref(xc_zdd);
+    DdNode *xc_zdd = Cudd_zddUnateProduct(dd, x_zdd, c_zdd); Cudd_Ref(xc_zdd);
     DdNode *f2 = Cudd_zddModSum(dd, y_zdd, xc_zdd);
     f2 = Cudd_zddModSum(dd, f2, x_zdd);
     f2 = Cudd_zddModSum(dd, f2, c_zdd); Cudd_Ref(f2);
@@ -204,7 +207,7 @@ main(
     ZDD_dotfile(dd, f2, "f2_zdd", names);
 
     // create f3 = x + ba + b + a
-    DdNode *ba_zdd = Cudd_zddProduct(dd, b_zdd, a_zdd); Cudd_Ref(ba_zdd);
+    DdNode *ba_zdd = Cudd_zddUnateProduct(dd, b_zdd, a_zdd); Cudd_Ref(ba_zdd);
     DdNode *f3 = Cudd_zddModSum(dd, x_zdd, ba_zdd);
     f3 = Cudd_zddModSum(dd, f3, b_zdd);
     f3 = Cudd_zddModSum(dd, f3, a_zdd); Cudd_Ref(f3);
@@ -219,10 +222,36 @@ main(
     DdNode *r0_E = Cudd_E(r0); Cudd_Ref(r0_E);
     DdNode *f1_E = Cudd_E(f1); Cudd_Ref(f1_E);
 
-    DdNode *r1 = Cudd_zddProduct(dd, r0_T, f1_E);
+    DdNode *r1 = Cudd_zddUnateProduct(dd, r0_T, f1_E);
     r1 = Cudd_zddModSum(dd, r1, r0_E); Cudd_Ref(r1);
     ZDD_dotfile(dd, r1, "r1_zdd", names);
 
+
+    // r1 --f2--> r2
+    DdNode *r1_T = Cudd_T(r1); Cudd_Ref(r1_T);
+    DdNode *r1_E = Cudd_E(r1); Cudd_Ref(r1_E);
+    DdNode *f2_E = Cudd_E(f2); Cudd_Ref(f2_E);
+
+    DdNode *r2 = Cudd_zddUnateProduct(dd, r1_T, f2_E);
+    r2 = Cudd_zddModSum(dd, r2, r1_E); Cudd_Ref(r2);
+    ZDD_dotfile(dd, r2, "r2_zdd", names);
+    Cudd_zddPrintCover(dd, r2);
+
+
+    // r2 --f3--> r3
+    DdNode *r2_T = Cudd_T(r2); Cudd_Ref(r2_T);
+    DdNode *r2_E = Cudd_E(r2); Cudd_Ref(r2_E);
+    DdNode *f3_E = Cudd_E(f3); Cudd_Ref(f3_E);
+
+    DdNode *r3 = Cudd_zddUnateProduct(dd, r2_T, f3_E);
+    r3 = Cudd_zddModSum(dd, r3, r2_E); Cudd_Ref(r3);
+    ZDD_dotfile(dd, r3, "r3_zdd", names);
+    Cudd_zddPrintMinterm(dd, r3);
+
+    // TODO: - Generalize in an algorithm
+    // - loop through all f2, f2, f3
+    // - compute r1, r2, r3
+    
     exit(0);
 
 } /* end of main */
@@ -268,14 +297,14 @@ DdNode* Cudd_zddModSum (DdManager* dd, DdNode* a, DdNode* b)
 DdNode* Cudd_DC(DdManager* dd, DdNode* a)
 {
     DdNode *a_dc = a; Cudd_Ref(a_dc);
-    DdNode *x; 
+    DdNode *x_town; 
     int size = Cudd_ReadSize(dd);
     for (int i=0; i < size; i++)
     {
       if (i == a->index) continue;
-      x = Cudd_bddIthVar(dd, i); Cudd_Ref(x);
-      a_dc = Cudd_bddAnd(dd, a_dc, Cudd_Not(x));
-      Cudd_Deref(x);
+      x_town = Cudd_bddIthVar(dd, i); Cudd_Ref(x_town);
+      a_dc = Cudd_bddAnd(dd, a_dc, Cudd_Not(x_town));
+      Cudd_Deref(x_town);
     }
     
     a_dc = Cudd_zddPortFromBdd(dd, a_dc); Cudd_Ref(a_dc);
@@ -295,7 +324,7 @@ DdNode* Cudd_DC(DdManager* dd, DdNode* a)
 void print_dd (DdManager *gbm, DdNode *dd, int n, int pr )
 {
     printf("DdManager nodes: %ld | ", Cudd_ReadNodeCount(gbm)); /*Reports the number of live nodes in BDDs and ADDs*/
-    printf("DdManager vars: %d | ", Cudd_ReadSize(gbm) ); /*Returns the number of BDD variables in existence*/
+    printf("DdManager vars: %d | ", Cudd_ReadSize(gbm) ); /*Returns the number of BDD variables in ex_townistence*/
     printf("DdManager reorderings: %d | ", Cudd_ReadReorderings(gbm) ); /*Returns the number of times reordering has occurred*/
     printf("DdManager memory: %ld \n", Cudd_ReadMemoryInUse(gbm) ); /*Returns the memory in use by the manager measured in bytes*/
     Cudd_PrintDebug(gbm, dd, n, pr);  // Prints to the standard output a DD and its statistics: number of nodes, number of leaves, number of minterms.
