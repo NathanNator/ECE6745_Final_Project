@@ -113,6 +113,7 @@ void ZDD_dotfile (DdManager* manager, DdNode* node, char* fname, char* names);
 DdNode* Cudd_zddModSum (DdManager* manager, DdNode* a, DdNode* b);
 DdNode* Cudd_zddDC(DdManager* dd, DdNode* a);
 DdNode* Cudd_zddAndGate(DdManager* dd, DdNode* z, DdNode* a, DdNode* b);
+DdNode* Cudd_zddMultMonRed(DdManager* dd, DdNode* z, DdNode *poly_list[], int poly_size);
 void print_dd(DdManager *gbm, DdNode *dd, int n, int pr); 
 
 /**Function********************************************************************
@@ -199,7 +200,11 @@ main(
     // create f3 = x + ba + b + a
     DdNode *f3 = Cudd_zddAndGate(dd, x_zdd, b_zdd, a_zdd);
     ZDD_dotfile(dd, f3, "../../zdd_plots/f3_zdd", names);
-
+ 
+    DdNode *poly_list[] = {f1, f2, f3};
+    int poly_size = sizeof(poly_list)/sizeof(poly_list[0]);
+    DdNode *zi_zdd = Cudd_zddMultMonRed(dd, z_zdd, poly_list, poly_size);
+    ZDD_dotfile(dd, zi_zdd, "../../zdd_plots/zi_zdd", names);
 
     // improved one step reduction!
     /// r0 = z -f1-> r1
@@ -308,6 +313,32 @@ DdNode* Cudd_zddAndGate(DdManager* dd, DdNode* z, DdNode* a, DdNode* b)
 
     return f; 
 }
+
+
+DdNode* Cudd_zddMultMonRed(DdManager* dd, DdNode* z, DdNode *poly_list[], int poly_size)
+{
+    DdNode *zi = z; 
+    for (int i = 0; i < poly_size; i++){
+      
+        DdNode *g = poly_list[i];
+
+        if(g->index == zi->index){
+          DdNode *zi_T = Cudd_T(zi); Cudd_Ref(zi_T);
+          DdNode *zi_E = Cudd_E(zi); Cudd_Ref(zi_E);
+          DdNode *g_E = Cudd_E(g); Cudd_Ref(g_E);
+
+          zi = Cudd_zddUnateProduct(dd, zi_T, g_E);
+          zi = Cudd_zddModSum(dd, zi, zi_E); Cudd_Ref(zi);
+
+          Cudd_RecursiveDeref(dd, zi_T);
+          Cudd_RecursiveDeref(dd, zi_E);
+          Cudd_RecursiveDeref(dd, g_E);
+        }
+    }
+    
+    return zi;
+}
+
 
 /**
  * Print a dd summary
