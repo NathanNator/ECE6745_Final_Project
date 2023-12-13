@@ -111,6 +111,7 @@ static int ntrReadTree (DdManager *dd, char *treefile, int nvars);
 void BDD_dotfile (DdManager* manager, DdNode* node, char* fname, char* names);
 void ZDD_dotfile (DdManager* manager, DdNode* node, char* fname, char* names);
 DdNode* Cudd_zddModSum (DdManager* manager, DdNode* a, DdNode* b);
+DdNode* Cudd_DC(DdManager* dd, DdNode* a);
 void print_dd(DdManager *gbm, DdNode *dd, int n, int pr); 
 
 /**Function********************************************************************
@@ -174,17 +175,50 @@ main(
     /***** Add a new variable ***********/
     
     /* Primary Inputs */ // /*
-    //z = Cudd_bddNewVar(dd);
-    // y = Cudd_bddNewVar(dd);
-    // x = Cudd_bddNewVar(dd);
-    //d = Cudd_bddNewVar(dd);
-    // c = Cudd_bddNewVar(dd);
-    // b = Cudd_bddNewVar(dd);
-    // a = Cudd_bddNewVar(dd); // */
+    DdNode *z = Cudd_bddNewVar(dd);
+    DdNode *y = Cudd_bddNewVar(dd);
+    DdNode *x = Cudd_bddNewVar(dd);
+    DdNode *d = Cudd_bddNewVar(dd);
+    DdNode *c = Cudd_bddNewVar(dd);
+    DdNode *b = Cudd_bddNewVar(dd);
+    DdNode *a = Cudd_bddNewVar(dd); // */
 
-    //char * names[7] = { "z", "y", "x", "d", "c", "b", "a" };
-    // char * names[3] = { "y", "x", "c" };
+    char * names[7] = { "z", "y", "x", "d", "c", "b", "a" };
 
+
+    // create f1 = 
+
+    // Proof of Cudd_DC()
+    // /*   
+    DdNode *z_just = Cudd_bddAnd(dd, z, one); Cudd_Ref(z_just);
+    DdNode *y_just = Cudd_bddAnd(dd, y, one); Cudd_Ref(y_just);
+    DdNode *x_just = Cudd_bddAnd(dd, x, one); Cudd_Ref(x_just);
+
+    DdNode *y_dc = Cudd_bddAnd(dd, y, Cudd_Not(z));
+
+    //DdNode *x_dc = Cudd_bddAnd(dd, x, Cudd_Not(y_dc));
+    DdNode *x_dc = Cudd_DC(dd, x); Cudd_Ref(x_dc); // xz'y' everything else is dont cared
+
+    DdNode *b_dc = Cudd_DC(dd, b); Cudd_Ref(b_dc);
+
+
+    // print outs
+    DdNode * z_zdd = Cudd_zddPortFromBdd(dd, z_just); Cudd_Ref(z_zdd);
+    ZDD_dotfile(dd, z_zdd, "z_zdd_zdd", names);
+
+    DdNode * y_zdd = Cudd_zddPortFromBdd(dd, y_dc); Cudd_Ref(y_zdd);
+    ZDD_dotfile(dd, y_zdd, "y_zdd_zdd", names);
+
+    //DdNode * x_zdd = Cudd_zddPortFromBdd(dd, x_dc); Cudd_Ref(x_zdd);
+    ZDD_dotfile(dd, x_dc, "x_zdd", names);
+
+    //DdNode * b_zdd = Cudd_zddPortFromBdd(dd, b_dc); Cudd_Ref(b_zdd);
+    ZDD_dotfile(dd, b_dc, "b_zdd", names);
+    // */   
+
+
+    ///// proof of Cudd_zddModSum()
+    /*
     DdNode *a = Cudd_bddNewVar(dd);
     DdNode *b = Cudd_bddNewVar(dd);
     DdNode *c = Cudd_bddNewVar(dd);
@@ -240,7 +274,7 @@ main(
     DdNode *f_g = Cudd_zddModSum(dd, f, g);
     Cudd_PrintDebug(dd, f_g, 1, 2);
     ZDD_dotfile(dd, f_g, "f_g_zdd", names);
-
+    */
 
 
 
@@ -398,6 +432,24 @@ DdNode* Cudd_zddModSum (DdManager* dd, DdNode* a, DdNode* b)
     Cudd_RecursiveDerefZdd(dd, uni);
     Cudd_RecursiveDerefZdd(dd, isect);
     return diff;
+}
+
+
+DdNode* Cudd_DC(DdManager* dd, DdNode* a)
+{
+    DdNode *a_dc = a; Cudd_Ref(a_dc);
+    DdNode *x; 
+    int size = Cudd_ReadSize(dd);
+    for (int i=0; i < size; i++)
+    {
+      if (i == a->index) continue;
+      x = Cudd_bddIthVar(dd, i); Cudd_Ref(x);
+      a_dc = Cudd_bddAnd(dd, a_dc, Cudd_Not(x));
+      Cudd_Deref(x);
+    }
+    
+    a_dc = Cudd_zddPortFromBdd(dd, a_dc); Cudd_Ref(a_dc);
+    return a_dc;
 }
 
 
