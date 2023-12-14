@@ -112,7 +112,8 @@ void BDD_dotfile (DdManager* manager, DdNode* node, char* fname, char* names);
 void ZDD_dotfile (DdManager* manager, DdNode* node, char* fname, char* names);
 DdNode* Cudd_zddModSum (DdManager* manager, DdNode* a, DdNode* b);
 DdNode* Cudd_zddDC(DdManager* dd, DdNode* a);
-DdNode* Cudd_zddAndGate(DdManager* dd, DdNode* z, DdNode* a, DdNode* b);
+DdNode* Cudd_zddOrGate(DdManager* dd, DdNode* z, DdNode* a, DdNode* b);
+DdNode* Cudd_zddXorGate(DdManager* dd, DdNode* z, DdNode* a, DdNode* b);
 DdNode* Cudd_zddMultMonRed(DdManager* dd, DdNode* z, DdNode *poly_list[], int poly_size); 
 
 /**Function********************************************************************
@@ -189,15 +190,15 @@ main(
     DdNode *a_zdd = Cudd_zddDC(dd, a); Cudd_Ref(a_zdd);
 
     // f1 = z + yd + y + d
-    DdNode *f1 = Cudd_zddAndGate(dd, z_zdd, y_zdd, d_zdd);
+    DdNode *f1 = Cudd_zddOrGate(dd, z_zdd, y_zdd, d_zdd);
     ZDD_dotfile(dd, f1, "../../zdd_plots/f1_zdd", names);
 
     // create f2 = y + xc + x + c
-    DdNode *f2 = Cudd_zddAndGate(dd, y_zdd, x_zdd, c_zdd);
+    DdNode *f2 = Cudd_zddOrGate(dd, y_zdd, x_zdd, c_zdd);
     ZDD_dotfile(dd, f2, "../../zdd_plots/f2_zdd", names);
 
     // create f3 = x + ba + b + a
-    DdNode *f3 = Cudd_zddAndGate(dd, x_zdd, b_zdd, a_zdd);
+    DdNode *f3 = Cudd_zddOrGate(dd, x_zdd, b_zdd, a_zdd);
     ZDD_dotfile(dd, f3, "../../zdd_plots/f3_zdd", names);
  
     DdNode *poly_list[] = {f1, f2, f3};
@@ -297,12 +298,22 @@ DdNode* Cudd_zddDC(DdManager* dd, DdNode* a)
 }
 
 
-DdNode* Cudd_zddAndGate(DdManager* dd, DdNode* z, DdNode* a, DdNode* b)
+DdNode* Cudd_zddOrGate(DdManager* dd, DdNode* z, DdNode* a, DdNode* b)
 {
     // create f = z + ab + a + b
     DdNode *ab_zdd = Cudd_zddUnateProduct(dd, a, b); Cudd_Ref(ab_zdd);
     DdNode *f = Cudd_zddModSum(dd, z, ab_zdd);
     f = Cudd_zddModSum(dd, f, a);
+    f = Cudd_zddModSum(dd, f, b); Cudd_Ref(f);
+
+    return f; 
+}
+
+
+DdNode* Cudd_zddXorGate(DdManager* dd, DdNode* z, DdNode* a, DdNode* b)
+{
+    // create f = z + a + b
+    DdNode *f = Cudd_zddModSum(dd, z, a);
     f = Cudd_zddModSum(dd, f, b); Cudd_Ref(f);
 
     return f; 
