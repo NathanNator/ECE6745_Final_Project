@@ -1,23 +1,23 @@
 /*
-poly1.sing
+poly2.sing
 Fernando Araujo, Nathan Sartnurak, Kidus Yohannes
 
 Run on Singular:
-<"poly1.sing";
+<"poly2.sing";
 */
 
 // This is how you declare a ring
 // This is r = Q[a, b, c] with LEX a>b>c
 // Outputs e and d go before PIs: LEX e>d>a>b>c
-ring r = 0, (e, d, a, b, c), lp;
+ring r = 2, (R, s0, x, y, z), lp;
 
 // Uncomment this ring declaration for more experiments
 // lp = LEX, dp = DEGREVLEX, Dp = deglex
 
-// poly f = a * b * c;
+// poly f = x + y*z;
 
-poly g(1) = e + d * c;
-poly g(2) = d + a * b;
+poly g(1) = R + x + s0;
+poly g(2) = s0 + y * z;
 
 printf("g1: %s", g(1));
 printf("g2: %s", g(2));
@@ -30,10 +30,10 @@ ideal J = g(1), g(2);
 poly h(1) = 0;
 poly h(2) = 0;
 poly st_num = 0;
-poly func = e;
+poly func = R;
 
 // 1-step reduction Algorithm
-// /*
+ /*
 printf("Begin the optimized algorithm with a for loop");
  
 for (int i = 1; i < 3; i++)
@@ -64,15 +64,68 @@ for (int i = 1; i < 3; i++)
 	 leadmonom(h(i));
 
          printf("");
-         //printf("");
-
 	 break;
       }
    }
 }
-
 // */
 
+
+/* Improved Reduction with one-step
+
+rj = ri + q*fj
+index j = 1 + i
+
+ri = xj*[then(ri)] + [else(ri)]
+fj = xj + [else(fj)]
+xj = top variable of ri and fj
+q  = (then(ri))
+*/
+
+// call functions
+//poly J[1] = g(1) = R + x + s0;
+//poly J[2] = g(2) = s0 + y * z;
+
+// remainders
+poly r(1) = 0;
+poly r(2) = 0;
+
+// variables
+poly then_r = 0;
+poly else_r = 0;
+poly else_f = 0;
+poly xj     = 0;
+poly q      = 0;
+poly ri     = 0;
+poly fj     = 0;
+
+// /* 
+printf("Improved Reduction with one-step");
+for (int i = 1; i < size(J) + 1; i++)
+{
+   if (lead(func)/lead(J[i]) != 0)
+   {
+      xj     = lead(J[i]);
+
+      else_r = subst(func, xj, 0);
+      then_r = func - else_r;
+      then_r = subst(then_r, xj, 1);
+
+      else_f = subst(J[i], xj, 0);
+
+      ri     = xj*then_r + else_r;
+      fj     = xj + else_f;
+      q      = then_r;
+
+      r(i)   = ri + q*fj;
+      printf("r(%s) = %s", i, r(i));
+
+      // recall remainder for next operation
+      func = r(i);
+   }
+} // */
+
+printf("");
 
 // Compute a Grobner Basis
 // two algorithms implemented in singular to compute GB
@@ -85,9 +138,9 @@ J;
 printf("");
 
 // Divide f by the groebner basis of ideal J
-poly l = reduce(e, J);
+poly l = reduce(R, J);
 // print poly l;
-printf("Reduction of e, J");
+printf("Reduction of R, J");
 l;
 
 // l has to be 0 as f is already in J
