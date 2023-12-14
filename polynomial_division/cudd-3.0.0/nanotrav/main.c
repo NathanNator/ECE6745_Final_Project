@@ -113,8 +113,7 @@ void ZDD_dotfile (DdManager* manager, DdNode* node, char* fname, char* names);
 DdNode* Cudd_zddModSum (DdManager* manager, DdNode* a, DdNode* b);
 DdNode* Cudd_zddDC(DdManager* dd, DdNode* a);
 DdNode* Cudd_zddAndGate(DdManager* dd, DdNode* z, DdNode* a, DdNode* b);
-DdNode* Cudd_zddMultMonRed(DdManager* dd, DdNode* z, DdNode *poly_list[], int poly_size);
-void print_dd(DdManager *gbm, DdNode *dd, int n, int pr); 
+DdNode* Cudd_zddMultMonRed(DdManager* dd, DdNode* z, DdNode *poly_list[], int poly_size); 
 
 /**Function********************************************************************
 
@@ -208,41 +207,36 @@ main(
 
     // improved one step reduction!
     /// r0 = z -f1-> r1
-    DdNode *r0 = z_zdd;
-    DdNode *r0_T = Cudd_T(r0); Cudd_Ref(r0_T);
-    DdNode *r0_E = Cudd_E(r0); Cudd_Ref(r0_E);
-    DdNode *f1_E = Cudd_E(f1); Cudd_Ref(f1_E);
+    // DdNode *r0 = z_zdd;
+    // DdNode *r0_T = Cudd_T(r0); Cudd_Ref(r0_T);
+    // DdNode *r0_E = Cudd_E(r0); Cudd_Ref(r0_E);
+    // DdNode *f1_E = Cudd_E(f1); Cudd_Ref(f1_E);
 
-    DdNode *r1 = Cudd_zddUnateProduct(dd, r0_T, f1_E);
-    r1 = Cudd_zddModSum(dd, r1, r0_E); Cudd_Ref(r1);
-    ZDD_dotfile(dd, r1, "../../zdd_plots/r1_zdd", names);
-
-
-    // r1 --f2--> r2
-    DdNode *r1_T = Cudd_T(r1); Cudd_Ref(r1_T);
-    DdNode *r1_E = Cudd_E(r1); Cudd_Ref(r1_E);
-    DdNode *f2_E = Cudd_E(f2); Cudd_Ref(f2_E);
-
-    DdNode *r2 = Cudd_zddUnateProduct(dd, r1_T, f2_E);
-    r2 = Cudd_zddModSum(dd, r2, r1_E); Cudd_Ref(r2);
-    ZDD_dotfile(dd, r2, "../../zdd_plots/r2_zdd", names);
-    Cudd_zddPrintCover(dd, r2);
+    // DdNode *r1 = Cudd_zddUnateProduct(dd, r0_T, f1_E);
+    // r1 = Cudd_zddModSum(dd, r1, r0_E); Cudd_Ref(r1);
+    // ZDD_dotfile(dd, r1, "../../zdd_plots/r1_zdd", names);
 
 
-    // r2 --f3--> r3
-    DdNode *r2_T = Cudd_T(r2); Cudd_Ref(r2_T);
-    DdNode *r2_E = Cudd_E(r2); Cudd_Ref(r2_E);
-    DdNode *f3_E = Cudd_E(f3); Cudd_Ref(f3_E);
+    // // r1 --f2--> r2
+    // DdNode *r1_T = Cudd_T(r1); Cudd_Ref(r1_T);
+    // DdNode *r1_E = Cudd_E(r1); Cudd_Ref(r1_E);
+    // DdNode *f2_E = Cudd_E(f2); Cudd_Ref(f2_E);
 
-    DdNode *r3 = Cudd_zddUnateProduct(dd, r2_T, f3_E);
-    r3 = Cudd_zddModSum(dd, r3, r2_E); Cudd_Ref(r3);
-    ZDD_dotfile(dd, r3, "../../zdd_plots/r3_zdd", names);
-    Cudd_zddPrintMinterm(dd, r3);
+    // DdNode *r2 = Cudd_zddUnateProduct(dd, r1_T, f2_E);
+    // r2 = Cudd_zddModSum(dd, r2, r1_E); Cudd_Ref(r2);
+    // ZDD_dotfile(dd, r2, "../../zdd_plots/r2_zdd", names);
+    // Cudd_zddPrintCover(dd, r2);
 
 
-    // TODO: - Generalize in an algorithm
-    // - loop through all f2, f2, f3
-    // - compute r1, r2, r3
+    // // r2 --f3--> r3
+    // DdNode *r2_T = Cudd_T(r2); Cudd_Ref(r2_T);
+    // DdNode *r2_E = Cudd_E(r2); Cudd_Ref(r2_E);
+    // DdNode *f3_E = Cudd_E(f3); Cudd_Ref(f3_E);
+
+    // DdNode *r3 = Cudd_zddUnateProduct(dd, r2_T, f3_E);
+    // r3 = Cudd_zddModSum(dd, r3, r2_E); Cudd_Ref(r3);
+    // ZDD_dotfile(dd, r3, "../../zdd_plots/r3_zdd", names);
+    // Cudd_zddPrintMinterm(dd, r3);
     
     exit(0);
 
@@ -337,25 +331,6 @@ DdNode* Cudd_zddMultMonRed(DdManager* dd, DdNode* z, DdNode *poly_list[], int po
     }
     
     return zi;
-}
-
-
-/**
- * Print a dd summary
- * pr = 0 : prints nothing
- * pr = 1 : prints counts of nodes and minterms
- * pr = 2 : prints counts + disjoint sum of product
- * pr = 3 : prints counts + list of nodes
- * pr > 3 : prints counts + disjoint sum of product + list of nodes
- * @param the dd node
- */
-void print_dd (DdManager *gbm, DdNode *dd, int n, int pr )
-{
-    printf("DdManager nodes: %ld | ", Cudd_ReadNodeCount(gbm)); /*Reports the number of live nodes in BDDs and ADDs*/
-    printf("DdManager vars: %d | ", Cudd_ReadSize(gbm) ); /*Returns the number of BDD variables in ex_townistence*/
-    printf("DdManager reorderings: %d | ", Cudd_ReadReorderings(gbm) ); /*Returns the number of times reordering has occurred*/
-    printf("DdManager memory: %ld \n", Cudd_ReadMemoryInUse(gbm) ); /*Returns the memory in use by the manager measured in bytes*/
-    Cudd_PrintDebug(gbm, dd, n, pr);  // Prints to the standard output a DD and its statistics: number of nodes, number of leaves, number of minterms.
 }
 
 
