@@ -324,7 +324,6 @@ void BDD_dotfile (DdManager* manager, DdNode* node, char* fname, char* names, ch
     char filename[64];
     char *oname[1] = { outname };
     sprintf(filename, "%s.dot", fname);
-    //const char* filename = ".dot", fname;
     FILE* outfile = fopen(filename, "w");
     Cudd_DumpDot(manager, 1, &node, (char**)names, (char**)oname, outfile);
     fclose(outfile);
@@ -340,7 +339,6 @@ void ZDD_dotfile (DdManager* manager, DdNode* node, char* fname, char* names, ch
     char filename[64];
     char *oname[1] = { outname };
     sprintf(filename, "%s.dot", fname);
-    //const char* filename = ".dot", fname;
     FILE* outfile = fopen(filename, "w");
     Cudd_zddDumpDot(manager, 1, &node, (char**)names, (char**)oname, outfile);
     fclose(outfile);
@@ -373,7 +371,7 @@ DdNode* Cudd_zddDC(DdManager* dd, DdNode* a)
 /**
  * @brief Implements modulo 2 sum for ZDDs.
  * (Union of A and B) diff (Intersect of A and B).
- * f = (A U B) - (A ∩ B)
+ * f = (A ∪ B) - (A ∩ B)
  */
 DdNode* Cudd_zddModSum (DdManager* dd, DdNode* a, DdNode* b)
 {

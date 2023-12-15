@@ -10,29 +10,29 @@ edge [dir = none];
 { rank = same; node [shape = box]; edge [style = invis];
 "  f2  "; }
 { rank = same; " y ";
-"0x25f";
+"y";
 }
 { rank = same; " x ";
-"0x25e";
+"x";
 }
 { rank = same; " c ";
-"0x213";
-"0x218";
+"c₀";
+"c₁";
 }
 { rank = same; "CONST NODES";
 { node [shape = box]; "0x1a6";
 "0x1a5";
 }
 }
-"  f2  " -> "0x25f" [style = solid];
-"0x25f" -> "0x1a5";
-"0x25f" -> "0x25e" [style = dashed];
-"0x25e" -> "0x213";
-"0x25e" -> "0x218" [style = dashed];
-"0x213" -> "0x1a5";
-"0x213" -> "0x1a5" [style = dashed];
-"0x218" -> "0x1a5";
-"0x218" -> "0x1a6" [style = dashed];
+"  f2  " -> "y" [style = solid];
+"y" -> "0x1a5";
+"y" -> "x" [style = dashed];
+"x" -> "c₀";
+"x" -> "c₁" [style = dashed];
+"c₀" -> "0x1a5";
+"c₀" -> "0x1a5" [style = dashed];
+"c₁" -> "0x1a5";
+"c₁" -> "0x1a6" [style = dashed];
 "0x1a6" [label = "0"];
 "0x1a5" [label = "1"];
 }

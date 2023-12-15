@@ -10,40 +10,40 @@ edge [dir = none];
 { rank = same; node [shape = box]; edge [style = invis];
 "  zi_zdd  "; }
 { rank = same; " d ";
-"0x271";
+"d";
 }
 { rank = same; " c ";
-"0x270";
-"0x24c";
+"c₀";
+"c₁";
 }
 { rank = same; " b ";
-"0x24b";
-"0x266";
+"b₀";
+"b₁";
 }
 { rank = same; " a ";
-"0x24a";
-"0x251";
+"a₀";
+"a₁";
 }
 { rank = same; "CONST NODES";
 { node [shape = box]; "0x1a6";
 "0x1a5";
 }
 }
-"  zi_zdd  " -> "0x271" [style = solid];
-"0x271" -> "0x24c";
-"0x271" -> "0x270" [style = dashed];
-"0x270" -> "0x24b";
-"0x270" -> "0x266" [style = dashed];
-"0x24c" -> "0x24b";
-"0x24c" -> "0x24b" [style = dashed];
-"0x24b" -> "0x24a";
-"0x24b" -> "0x24a" [style = dashed];
-"0x266" -> "0x24a";
-"0x266" -> "0x251" [style = dashed];
-"0x24a" -> "0x1a5";
-"0x24a" -> "0x1a5" [style = dashed];
-"0x251" -> "0x1a5";
-"0x251" -> "0x1a6" [style = dashed];
+"  zi_zdd  " -> "d" [style = solid];
+"d" -> "c₁";
+"d" -> "c₀" [style = dashed];
+"c₀" -> "b₀";
+"c₀" -> "b₁" [style = dashed];
+"c₁" -> "b₀";
+"c₁" -> "b₀" [style = dashed];
+"b₀" -> "a₀";
+"b₀" -> "a₀" [style = dashed];
+"b₁" -> "a₀";
+"b₁" -> "a₁" [style = dashed];
+"a₀" -> "0x1a5";
+"a₀" -> "0x1a5" [style = dashed];
+"a₁" -> "0x1a5";
+"a₁" -> "0x1a6" [style = dashed];
 "0x1a6" [label = "0"];
 "0x1a5" [label = "1"];
 }
