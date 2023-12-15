@@ -1,8 +1,8 @@
 '''
-This script adds the node variable names for all the 
-ZDD dot files in the same directory.
+This script adds the node variable names for all the dot files in the current directory.
 
-It uses regex to match and find all the variable names and their associated addresses. Then replaces all the addresses with the respective variable names. And finally rewrites the dot file.
+It uses regex to match and find all the variable names and their associated addresses. 
+Then replaces all the addresses with their respective variable names, finally rewriting the dot file.
 '''
 
 import os

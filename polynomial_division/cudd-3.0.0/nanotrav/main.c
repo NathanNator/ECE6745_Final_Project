@@ -211,14 +211,14 @@ main(
     // improved one step reduction!
     /*
     // r0 = z -f1-> r1
-    DdNode *r0 = z_zdd;
-    DdNode *r0_T = Cudd_T(r0); Cudd_Ref(r0_T);
-    DdNode *r0_E = Cudd_E(r0); Cudd_Ref(r0_E);
+    DdNode *r0_start = z_zdd;
+    DdNode *r0_T = Cudd_T(r0_start); Cudd_Ref(r0_T);
+    DdNode *r0_E = Cudd_E(r0_start); Cudd_Ref(r0_E);
     DdNode *f1_E = Cudd_E(f1); Cudd_Ref(f1_E);
 
     DdNode *r1 = Cudd_zddUnateProduct(dd, r0_T, f1_E);
     r1 = Cudd_zddModSum(dd, r1, r0_E); Cudd_Ref(r1);
-    ZDD_dotfile(dd, r1, "../../zdd_plots/r1_zdd", names);
+    ZDD_dotfile(dd, r1, "../../zdd_plots/r1_zdd", names, "r1");
 
 
     // r1 --f2--> r2
@@ -228,8 +228,7 @@ main(
 
     DdNode *r2 = Cudd_zddUnateProduct(dd, r1_T, f2_E);
     r2 = Cudd_zddModSum(dd, r2, r1_E); Cudd_Ref(r2);
-    ZDD_dotfile(dd, r2, "../../zdd_plots/r2_zdd", names);
-    Cudd_zddPrintCover(dd, r2);
+    ZDD_dotfile(dd, r2, "../../zdd_plots/r2_zdd", names, "r2");
 
 
     // r2 --f3--> r3
@@ -239,7 +238,7 @@ main(
 
     DdNode *r3 = Cudd_zddUnateProduct(dd, r2_T, f3_E);
     r3 = Cudd_zddModSum(dd, r3, r2_E); Cudd_Ref(r3);
-    ZDD_dotfile(dd, r3, "../../zdd_plots/r3_zdd", names);
+    ZDD_dotfile(dd, r3, "../../zdd_plots/r3_zdd", names, "r3");
     Cudd_zddPrintMinterm(dd, r3);
     */
     

@@ -20,19 +20,19 @@ edge [dir = none];
 "a₁";
 }
 { rank = same; "CONST NODES";
-{ node [shape = box]; "0x1a6";
-"0x1a5";
+{ node [shape = box]; "0xa6";
+"0xa5";
 }
 }
 "  f3  " -> "x" [style = solid];
-"x" -> "0x1a5";
+"x" -> "0xa5";
 "x" -> "b" [style = dashed];
 "b" -> "a₀";
 "b" -> "a₁" [style = dashed];
-"a₀" -> "0x1a5";
-"a₀" -> "0x1a5" [style = dashed];
-"a₁" -> "0x1a5";
-"a₁" -> "0x1a6" [style = dashed];
-"0x1a6" [label = "0"];
-"0x1a5" [label = "1"];
+"a₀" -> "0xa5";
+"a₀" -> "0xa5" [style = dashed];
+"a₁" -> "0xa5";
+"a₁" -> "0xa6" [style = dashed];
+"0xa6" [label = "0"];
+"0xa5" [label = "1"];
 }
