@@ -1,0 +1,41 @@
+digraph "ZDD" {
+size = "7.5,10"
+center = true;
+edge [dir = none];
+{ node [shape = plaintext];
+  edge [style = invis];
+  "CONST NODES" [style = invis];
+" x " -> " d " -> " c " -> "CONST NODES"; 
+}
+{ rank = same; node [shape = box]; edge [style = invis];
+"  r2  "; }
+{ rank = same; " x ";
+"x";
+}
+{ rank = same; " d ";
+"d₀";
+"d₁";
+}
+{ rank = same; " c ";
+"c₀";
+"c₁";
+}
+{ rank = same; "CONST NODES";
+{ node [shape = box]; "0xa6";
+"0xa5";
+}
+}
+"  r2  " -> "x" [style = solid];
+"x" -> "d₀";
+"x" -> "d₁" [style = dashed];
+"d₀" -> "c₀";
+"d₀" -> "c₀" [style = dashed];
+"d₁" -> "c₀";
+"d₁" -> "c₁" [style = dashed];
+"c₀" -> "0xa5";
+"c₀" -> "0xa5" [style = dashed];
+"c₁" -> "0xa5";
+"c₁" -> "0xa6" [style = dashed];
+"0xa6" [label = "0"];
+"0xa5" [label = "1"];
+}
