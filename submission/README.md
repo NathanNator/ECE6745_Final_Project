@@ -1,4 +1,4 @@
-# ECE6745 FINAL PROJECT
+# ECE6745 FINAL PROJECT README SUBMISSION 
 
 Verification of Polynomial Division using ZDDs
 
@@ -10,21 +10,54 @@ A circuit can be represented by a list of polynomials, where each polynomial rep
 
 We follow the methodology described in Dr. Kalla's paper on [Grobner Basis Reductions](https://my.ece.utah.edu/~kalla/papers/TCAD-GBR-ZDD.pdf) to apply polynomial division. Given an output net from our circuit, we show that its reduction with the list of ZDD bit-level polynomials gives us a ZDD output made up only primary inputs. We use this output to verify against the expected circuit implementation.
 
-See the project report for a breakdown on our approach, challenges we faced, and results for the verification of a 4 input OR gate and a 2-bit multiplier.
+See the project report for a breakdown on our approach, challenges we faced, and results for the verification of a chain of OR gates and a 2-bit multiplier.
 
-## Setup
+GITHUB LINK: 
+https://github.com/NathanNator/ECE6745_Final_Project/tree/main
 
-This project uses the CUDD package. You can follow [these](https://davidkebo.com/cudd/) instructions to download and install it. However, the repo already contains the package (**tools/cudd-3.0.0.tar.gz**) and a start up bash script (**start_up.sh**). 
+## Source Code Location and Commands: 
 
-**So all that is required after cloning the repo is to run the start up script.** The script automatically extracts the tar file, restores the main.c file that is saved on git, and the makefile. The modified makefile is set up so debugging works in VS Code. 
-
-The source file (main.c) is located here: **polynomial_division/cudd-3.0.0/nanotrav/main.c**
-
-After modifying main.c, you must run **'make check'** to recompile the code.
-
-Finally, run the nanotrav command to run the code:
+### Final Report Location
 ```
-./polynomial_division/cudd-3.0.0/nanotrav/nanotrav
+documentation/ECE6745_Final_Report.pdf 
+```
+
+### The source file for ZDD implementation (main.c) is located here
+```
+polynomial_division/cudd-3.0.0/nanotrav/main.c
+```
+
+### The source file for Singular Scripts are located here
+```
+Singular/
+```
+
+* 2-bit multiplier:
+`/Singular/multiplier.sing`
+
+* Chain of OR gates:
+`/Singular/ORgates.sing`
+
+* f = x + yz:
+`/Singular/poly2.sing`
+
+
+
+
+### Command to run main.c 
+```bash 
+cd polynomial_division/cudd-3.0.0/ 
+./nanotrav/nanotrav
+```
+
+### ZDD Plots for figures
+```
+zdd_plots/
+```
+
+### Python Script to Adds the node variable names for all the dot files in a current directory
+```
+zdd_plots/add_node_names.py
 ```
 
 ## Authors
