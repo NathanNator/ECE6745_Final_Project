@@ -55,7 +55,7 @@ cd polynomial_division/cudd-3.0.0/
 zdd_plots/
 ```
 
-### Python Script to Adds the node variable names for all the dot files in a current directory
+### Python Script to add the node variable names for all the dot files in a current directory
 ```
 zdd_plots/add_node_names.py
 ```
